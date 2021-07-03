@@ -2,16 +2,17 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostType} from './Post/Post';
 
+// typing data 'posts' witch I get from component Profile
 type MyPostsPropsType = {
-
+    posts: Array<PostType>
 }
 
+// drawing component MyPosts
 const MyPosts = (props: MyPostsPropsType) => {
 
-    let postsData: Array<PostType> = [
-        {id: 1, message: 'Hi', likesCount: 12},
-        {id: 2, message: 'How are you', likesCount: 10},
-    ]
+// declare variable 'postsElements' which create new array based on data props which from component 'Profile'. create with metod map.
+// in metod map I will send data with variable 'post'
+    let postsElements = props.posts.map(p => <Post post={p}/>)
 
     return (
         <div className={s.postsBlock}>
@@ -25,8 +26,7 @@ const MyPosts = (props: MyPostsPropsType) => {
                 </div>
             </div>
             <div className={s.post}>
-                <Post post={postsData[0]}/>
-                <Post post={postsData[1]}/>
+                {postsElements}
             </div>
         </div>
     )
