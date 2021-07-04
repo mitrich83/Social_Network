@@ -1,0 +1,7 @@
+.dialogItems .dialog {
+    color: white;
+    padding: 10px;
+}
+.dialogItems .active{
+    color: gold;
+}

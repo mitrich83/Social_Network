@@ -2,6 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostType} from './Post/Post';
 
+
 // typing data 'posts' witch I get from component Profile
 type MyPostsPropsType = {
     posts: Array<PostType>
@@ -26,6 +27,8 @@ const MyPosts = (props: MyPostsPropsType) => {
                 </div>
             </div>
             <div className={s.post}>
+
+
                 {postsElements}
             </div>
         </div>

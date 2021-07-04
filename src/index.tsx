@@ -4,9 +4,37 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+export type DialogItemType = {
+    name: string,
+    id: number
+}
+let dialogs:Array<DialogItemType> = [
+    {id: 1, name: 'Dimych'},
+    {id: 2, name: 'Andrey'},
+    {id: 3, name: 'Artem'},
+    {id: 4, name: 'Sveta'},
+    {id: 5, name: 'Yulia'},
+    {id: 6, name: 'Sasha'},
+];
+
+export type MessageItemType = {
+    message: string
+    id: number
+}
+let messages:Array<MessageItemType> = [
+    {id: 1, message: 'Hi'},
+    {id: 2, message: 'How'},
+    {id: 3, message: 'How are you'},
+    {id: 4, message: 'yo'},
+    {id: 5, message: 'yo'},
+    {id: 6, message: 'yo'},
+];
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App dialogs={dialogs} messages={messages}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
