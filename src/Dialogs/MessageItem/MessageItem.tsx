@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './MessageItem.module.css';
-import {MessageItemType} from '../../index';
+import {MessageItemType} from '../../Redux/State';
 
 
 type MessageItemPropsType ={

@@ -1,18 +1,14 @@
 import React from 'react';
 import s from './MyPosts.module.css';
-import Post, {PostType} from './Post/Post';
+import Post from './Post/Post';
+import {ProfilePropsType} from '../../Redux/State';
 
-
-// typing data 'posts' witch I get from component Profile
-type MyPostsPropsType = {
-    posts: Array<PostType>
-}
 
 // drawing component MyPosts
-const MyPosts = (props: MyPostsPropsType) => {
+const MyPosts = (props: ProfilePropsType) => {
 
-// declare variable 'postsElements' which create new array based on data props which from component 'Profile'. create with metod map.
-// in metod map I will send data with variable 'post'
+// declare variable 'postsElements' which create new array based on data props which from component 'Profile'. create with method map.
+// in method map I will send data with variable 'post'
     let postsElements = props.posts.map(p => <Post post={p}/>)
 
     return (
