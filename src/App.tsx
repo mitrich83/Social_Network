@@ -12,7 +12,6 @@ import {ProfileDataType, StateType} from './Redux/State';
 
 type AppStateType = {
     appState: StateType
-    // addPost: ProfilePropsType
     addPost: (postMessage: string) => void
 }
 
