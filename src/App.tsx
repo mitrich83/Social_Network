@@ -7,29 +7,32 @@ import Dialogs from './Dialogs/Dialogs';
 import News from './News/News';
 import Music from './Music/Music';
 import Settings from './Settings/Settings';
-import {BrowserRouter, Route,} from 'react-router-dom';
-import {StateType} from './Redux/State';
+import {Route} from 'react-router-dom';
+import {ProfileDataType, StateType} from './Redux/State';
 
-type AppStateType ={
+type AppStateType = {
     appState: StateType
+    // addPost: ProfilePropsType
+    addPost: (postMessage: string) => void
 }
 
-function App (props: AppStateType) {
+function App(props: AppStateType) {
     return (
-        <BrowserRouter>
-            <div className={'app-wrapper'}>
-                <Header/>
-                <Navbar/>
-                <div className={'app-wrapper-content'}>
-                    <Route path={'/profile'} render={ () => <Profile posts={props.appState.profilePage.posts}/>}/>
-                    <Route path={'/dialogs'} render={ () => <Dialogs dialogs={props.appState.dialogPage.dialogs} messages={props.appState.dialogPage.messages} />}/>
-                    <Route path={'/news'} render={ () => <News/>}/>
-                    <Route path={'/music'} render={ () => <Music/>}/>
-                    <Route path={'/settings'} render={ () => <Settings/>}/>
-                    <Route path={'*'} render={ () => <div>404</div>}/>
-                </div>
+
+        <div className={'app-wrapper'}>
+            <Header/>
+            <Navbar/>
+            <div className={'app-wrapper-content'}>
+                <Route path={'/profile'}
+                       render={() => <Profile posts={props.appState.profilePage.posts} addPost={props.addPost}/>}/>
+                <Route path={'/dialogs'} render={() => <Dialogs dialogs={props.appState.dialogPage.dialogs}
+                                                                messages={props.appState.dialogPage.messages}/>}/>
+                <Route path={'/news'} render={() => <News/>}/>
+                <Route path={'/music'} render={() => <Music/>}/>
+                <Route path={'/settings'} render={() => <Settings/>}/>
+                <Route path={'*'} render={() => <div>404</div>}/>
             </div>
-        </BrowserRouter>
+        </div>
     );
 }
 
