@@ -8,11 +8,12 @@ import News from './News/News';
 import Music from './Music/Music';
 import Settings from './Settings/Settings';
 import {Route} from 'react-router-dom';
-import {ProfileDataType, StateType} from './Redux/State';
+import {StateType,} from './Redux/State';
 
 type AppStateType = {
     appState: StateType
-    addPost: (postMessage: string) => void
+    addPost: () => void
+    updateNewPostText: (newText: string) => void
 }
 
 function App(props: AppStateType) {
@@ -23,9 +24,17 @@ function App(props: AppStateType) {
             <Navbar/>
             <div className={'app-wrapper-content'}>
                 <Route path={'/profile'}
-                       render={() => <Profile posts={props.appState.profilePage.posts} addPost={props.addPost}/>}/>
-                <Route path={'/dialogs'} render={() => <Dialogs dialogs={props.appState.dialogPage.dialogs}
-                                                                messages={props.appState.dialogPage.messages}/>}/>
+                       render={() => <Profile
+                           newPostText={props.appState.profilePage.newPostText}
+                           posts={props.appState.profilePage.posts}
+                           addPost={props.addPost}
+                           updateNewPostText={props.updateNewPostText}
+                       />}
+                />
+                <Route path={'/dialogs'}
+                       render={() => <Dialogs
+                           dialogs={props.appState.dialogPage.dialogs}
+                           messages={props.appState.dialogPage.messages}/>}/>
                 <Route path={'/news'} render={() => <News/>}/>
                 <Route path={'/music'} render={() => <Music/>}/>
                 <Route path={'/settings'} render={() => <Settings/>}/>

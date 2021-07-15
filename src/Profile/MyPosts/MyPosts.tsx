@@ -1,4 +1,4 @@
-import React, {LegacyRef, RefObject} from 'react';
+import React, {ChangeEvent, ChangeEventHandler, LegacyRef, RefObject} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileDataType} from '../../Redux/State';
@@ -12,21 +12,22 @@ const MyPosts = (props: ProfilePropsType) => {
 
     let postsElements = props.posts.map(p => <Post post={p}/>)
 
-    let newPostElement: RefObject<HTMLTextAreaElement> = React.createRef();
-
     const addPost = () => {
-        let text = newPostElement.current!.value
-        if(text === '') return
-        else {
-            props.addPost(text)
-        }
+        props.addPost()
     }
+
+    const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.updateNewPostText(e.currentTarget.value)
+
+    }
+
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
             <div>
                 <div>
-                    <textarea ref={newPostElement}/>
+                    <textarea onChange={onPostChange}
+                              value={props.newPostText}/>
                 </div>
                 <div>
                     <button onClick={addPost}>Add post</button>
