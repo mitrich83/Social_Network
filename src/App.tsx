@@ -40,7 +40,8 @@ function App(props: AppStateType) {
                            addMessage={props.addMessage}
                            onChangeTextareaDialogs={props.onChangeTextareaDialogs}
                            newMessageTextarea={props.appState.dialogPage.newMessageTextarea}
-                       />}
+                       />
+                       }
                 />
                 <Route path={'/news'} render={() => <News/>}/>
                 <Route path={'/music'} render={() => <Music/>}/>

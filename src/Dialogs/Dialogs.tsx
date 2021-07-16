@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, KeyboardEventHandler} from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
@@ -7,7 +7,7 @@ import {DialogsPageDataType} from '../Redux/State';
 export type DialogsPagePropsType = DialogsPageDataType & {
     addMessage: () => void
     newMessageTextarea: string
-    onChangeTextareaDialogs:(newTextarea: string) => void
+    onChangeTextareaDialogs: (newTextarea: string) => void
 }
 
 const Dialogs = (props: DialogsPagePropsType) => {
@@ -18,13 +18,17 @@ const Dialogs = (props: DialogsPagePropsType) => {
     let messagesElements = props.messages.map(m => <MessageItem message={m}/>);
 
     const onChangeTextareaDialogs = (e: ChangeEvent<HTMLTextAreaElement>) => {
-props.onChangeTextareaDialogs(e.currentTarget.value)
+        props.onChangeTextareaDialogs(e.currentTarget.value)
     }
 
     const addMessage = () => {
-      props.addMessage()
+        props.addMessage()
     }
-
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            addMessage()
+        }
+    }
 
     return (
         <div className={s.dialogs}>
@@ -33,17 +37,19 @@ props.onChangeTextareaDialogs(e.currentTarget.value)
             </div>
             <div className={s.messages}>
                 {messagesElements}
-            </div>
-            <div>
                 <div>
+                    <div>
                     <textarea onChange={onChangeTextareaDialogs}
                               value={props.newMessageTextarea}
+                              onKeyPress={onKeyPressHandler}
                     />
-                </div>
-                <div>
-                    <button onClick={addMessage}>Add message</button>
+                    </div>
+                    <div>
+                        <button onClick={addMessage}>Add message</button>
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }

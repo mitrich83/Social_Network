@@ -5,7 +5,7 @@ import App from './App';
 import state, {subscribe} from './Redux/State';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
-import {addMessage, addPost, onChangeTextareaDialogs, StateType, updateNewPostText} from './Redux/State'
+import {addMessage, addPost, onChangeTextareaDialogs, updateNewPostText} from './Redux/State'
 
 
 let rerenderEntireTree = () => {
