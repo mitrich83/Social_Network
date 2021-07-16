@@ -18,13 +18,14 @@ export type ProfileDataType = {
     posts: Array<PostType>
     newPostText: string
 }
-export type DialogsPagePropsType = {
+export type DialogsPageDataType = {
     dialogs: Array<DialogItemType>
     messages: Array<MessageItemType>
+    newMessageTextarea: string
 }
 export type StateType = {
     profilePage: ProfileDataType
-    dialogPage: DialogsPagePropsType
+    dialogPage: DialogsPageDataType
 }
 
 let state: StateType = {
@@ -51,7 +52,8 @@ let state: StateType = {
             {id: 4, message: 'yo'},
             {id: 5, message: 'yo'},
             {id: 6, message: 'yo'},
-        ]
+        ],
+        newMessageTextarea:'Hi everyone!'
     }
 }
 
@@ -73,6 +75,24 @@ export const addPost = () => {
 
 export const updateNewPostText = (newText: string) => {
     state.profilePage.newPostText = newText
+    rerenderEntireTree(state)
+}
+
+export const addMessage = () => {
+    const text = state.dialogPage.newMessageTextarea.trim()
+    if(text === '') return
+
+    const newMessage:MessageItemType = {
+        id: 7,
+        message: state.dialogPage.newMessageTextarea.trim()
+    }
+    state.dialogPage.messages.push(newMessage)
+    state.dialogPage.newMessageTextarea =''
+    rerenderEntireTree(state)
+}
+
+export const onChangeTextareaDialogs = (newTextarea: string) => {
+    state.dialogPage.newMessageTextarea = newTextarea
     rerenderEntireTree(state)
 }
 

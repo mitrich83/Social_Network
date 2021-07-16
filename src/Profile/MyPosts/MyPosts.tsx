@@ -1,7 +1,6 @@
-import React, {ChangeEvent, ChangeEventHandler, LegacyRef, RefObject} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {ProfileDataType} from '../../Redux/State';
 import {ProfilePropsType} from '../Profile';
 
 // drawing component MyPosts

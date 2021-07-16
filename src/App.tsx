@@ -14,6 +14,8 @@ type AppStateType = {
     appState: StateType
     addPost: () => void
     updateNewPostText: (newText: string) => void
+    addMessage: () => void
+    onChangeTextareaDialogs:(newTextarea: string) => void
 }
 
 function App(props: AppStateType) {
@@ -34,7 +36,12 @@ function App(props: AppStateType) {
                 <Route path={'/dialogs'}
                        render={() => <Dialogs
                            dialogs={props.appState.dialogPage.dialogs}
-                           messages={props.appState.dialogPage.messages}/>}/>
+                           messages={props.appState.dialogPage.messages}
+                           addMessage={props.addMessage}
+                           onChangeTextareaDialogs={props.onChangeTextareaDialogs}
+                           newMessageTextarea={props.appState.dialogPage.newMessageTextarea}
+                       />}
+                />
                 <Route path={'/news'} render={() => <News/>}/>
                 <Route path={'/music'} render={() => <Music/>}/>
                 <Route path={'/settings'} render={() => <Settings/>}/>
