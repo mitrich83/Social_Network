@@ -1,4 +1,6 @@
-import {rerenderEntireTree} from '../render';
+let rerenderEntireTree = () => {
+    console.log('State changed')
+}
 
 export type PostType = {
     message: string
@@ -70,12 +72,12 @@ export const addPost = () => {
 
     state.profilePage.posts.push(newPost);
     state.profilePage.newPostText = ''
-    rerenderEntireTree(state);
+    rerenderEntireTree();
 }
 
 export const updateNewPostText = (newText: string) => {
     state.profilePage.newPostText = newText
-    rerenderEntireTree(state)
+    rerenderEntireTree()
 }
 
 export const addMessage = () => {
@@ -88,12 +90,16 @@ export const addMessage = () => {
     }
     state.dialogPage.messages.push(newMessage)
     state.dialogPage.newMessageTextarea =''
-    rerenderEntireTree(state)
+    rerenderEntireTree()
 }
 
 export const onChangeTextareaDialogs = (newTextarea: string) => {
     state.dialogPage.newMessageTextarea = newTextarea
-    rerenderEntireTree(state)
+    rerenderEntireTree()
+}
+
+export const subscribe = (observer:any) => {
+rerenderEntireTree = observer
 }
 
 export default state
