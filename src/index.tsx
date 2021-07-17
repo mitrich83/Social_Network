@@ -2,22 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import state, {subscribe} from './Redux/State';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
-import {addMessage, addPost, onChangeTextareaDialogs, updateNewPostText} from './Redux/State'
-
+import store from './Redux/State';
 
 let rerenderEntireTree = () => {
-
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App appState={state}
-                     addPost={addPost}
-                     updateNewPostText={updateNewPostText}
-                     addMessage={addMessage}
-                     onChangeTextareaDialogs={onChangeTextareaDialogs}
+                <App appState={store.getState()}
+                     addPost={store.addPost.bind(store)}
+                     updateNewPostText={store.updateNewPostText.bind(store)}
+                     addMessage={store.addMessage.bind(store)}
+                     onChangeTextareaDialogs={store.onChangeTextareaDialogs.bind(store)}
                 />
             </BrowserRouter>
         </React.StrictMode>,
@@ -27,6 +24,6 @@ let rerenderEntireTree = () => {
 
 rerenderEntireTree();
 
-subscribe(rerenderEntireTree)
+store.subscribe(rerenderEntireTree)
 
 reportWebVitals();

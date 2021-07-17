@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfilePropsType} from '../Profile';
@@ -17,7 +17,12 @@ const MyPosts = (props: ProfilePropsType) => {
 
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.updateNewPostText(e.currentTarget.value)
+    }
 
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if(e.key === 'Enter') {
+            props.addPost()
+        }
     }
 
     return (
@@ -26,7 +31,9 @@ const MyPosts = (props: ProfilePropsType) => {
             <div>
                 <div>
                     <textarea onChange={onPostChange}
-                              value={props.newPostText}/>
+                              value={props.newPostText}
+                              onKeyPress={onKeyPressHandler}
+                    />
                 </div>
                 <div>
                     <button onClick={addPost}>Add post</button>

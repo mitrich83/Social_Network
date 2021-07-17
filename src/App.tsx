@@ -20,7 +20,6 @@ type AppStateType = {
 
 function App(props: AppStateType) {
     return (
-
         <div className={'app-wrapper'}>
             <Header/>
             <Navbar/>
