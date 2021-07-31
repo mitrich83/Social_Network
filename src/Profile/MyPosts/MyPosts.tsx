@@ -2,6 +2,9 @@ import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfilePropsType} from '../Profile';
+import {addPostActionCreator, changeNewPostActionCreator} from '../../Redux/State';
+
+
 
 // drawing component MyPosts
 const MyPosts = (props: ProfilePropsType) => {
@@ -12,13 +15,12 @@ const MyPosts = (props: ProfilePropsType) => {
     let postsElements = props.posts.map(p => <Post post={p}/>)
 
     const addPost = () => {
-        props.dispatch({type:'ADD-POST'})
+        props.dispatch(addPostActionCreator())
     }
 
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const newText = e.currentTarget.value
-        props.dispatch({type:'CHANGE-NEW-POST-TEXT', newText:newText})
-
+        props.dispatch(changeNewPostActionCreator(newText))
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {

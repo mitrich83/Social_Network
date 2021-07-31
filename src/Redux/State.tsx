@@ -1,3 +1,60 @@
+const ADD_POST = 'ADD-POST'
+const CHANGE_NEW_POST_TEXT = 'CHANGE-NEW-POST-TEXT'
+const ADD_MESSAGE = 'ADD-MESSAGE'
+const CHANGE_TEXTAREA_DIALOGS = 'CHANGE-TEXTAREA-DIALOGS'
+
+export type StoreType = {
+    _state:StateType
+    _callSubscriber: ()=> void
+    getState:()=> StateType
+    subscribe:(observer:any)=> void
+    dispatch:(action:ActionTypes)=> void
+}
+
+export type StateType = {
+    profilePage: ProfileDataType
+    dialogPage: DialogsPageDataType
+}
+
+export type DialogsPageDataType = {
+    dialogs: Array<DialogItemType>
+    messages: Array<MessageItemType>
+    newMessageTextarea: string
+}
+export type ProfileDataType = {
+    posts: Array<PostType>
+    newPostText: string
+}
+
+export type DialogItemType = {
+    name: string,
+    id: number
+}
+export type MessageItemType = {
+    message: string
+    id: number
+}
+
+export type PostType = {
+    message: string
+    image?: string
+    id: number
+    likesCount: number
+}
+
+export type ActionTypes =
+    ReturnType<typeof addPostActionCreator> |
+    ReturnType<typeof changeNewPostActionCreator> |
+    ReturnType<typeof AddMessageActionCreator> |
+    ReturnType<typeof changeTextareaDialogsActionCreator>
+
+export const addPostActionCreator = () => ({type: 'ADD-POST'} as const)
+export const changeNewPostActionCreator = (newText:string) =>
+    ({type:'CHANGE-NEW-POST-TEXT', newText: newText} as const)
+export const AddMessageActionCreator = ()=> ({type: 'ADD-MESSAGE'} as const)
+export const changeTextareaDialogsActionCreator = (newTextarea: string) =>
+    ({type: 'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea} as const)
+
 let store:StoreType = {
     _state:  {
         profilePage: {
@@ -39,7 +96,7 @@ let store:StoreType = {
     },
 
     dispatch(action ){
-        if(action.type === 'ADD-POST'){
+        if(action.type === ADD_POST){
             let text = this._state.profilePage.newPostText.trim()
             if (text === '') return
             const newPost: PostType = {
@@ -50,10 +107,10 @@ let store:StoreType = {
             this._state.profilePage.posts.push(newPost);
             this._state.profilePage.newPostText = ''
             this._callSubscriber();
-        } else if (action.type === 'CHANGE-NEW-POST-TEXT'){
+        } else if (action.type === CHANGE_NEW_POST_TEXT){
             this._state.profilePage.newPostText = action.newText
             this._callSubscriber()
-        } else if (action.type === 'ADD-MESSAGE'){
+        } else if (action.type === ADD_MESSAGE){
             const text = this._state.dialogPage.newMessageTextarea.trim()
             if(text === '') return
 
@@ -64,73 +121,11 @@ let store:StoreType = {
             this._state.dialogPage.messages.push(newMessage)
             this._state.dialogPage.newMessageTextarea =''
             this._callSubscriber()
-        } else if (action.type === 'CHANGE-TEXTAREA-DIALOGS') {
+        } else if (action.type === CHANGE_TEXTAREA_DIALOGS) {
             this._state.dialogPage.newMessageTextarea = action.newTextarea
             this._callSubscriber()
         }
-
-
     }
-
-}
-export type StoreType = {
-    _state:StateType
-    _callSubscriber: ()=> void
-    getState:()=> StateType
-    subscribe:(observer:any)=> void
-    dispatch:(action:ActionTypes)=> void
-}
-
-export type StateType = {
-    profilePage: ProfileDataType
-    dialogPage: DialogsPageDataType
-}
-
-export type DialogsPageDataType = {
-    dialogs: Array<DialogItemType>
-    messages: Array<MessageItemType>
-    newMessageTextarea: string
-}
-export type ProfileDataType = {
-    posts: Array<PostType>
-    newPostText: string
-}
-
-export type DialogItemType = {
-    name: string,
-    id: number
-}
-export type MessageItemType = {
-    message: string
-    id: number
-}
-
-export type PostType = {
-    message: string
-    image?: string
-    id: number
-    likesCount: number
-}
-
-export type ActionTypes = AddPostActionType | ChangeNewPostTextActionType | AddMessageActionType | ChangeTextareaDialogsActionType
-
-type AddPostActionType = {
-    type:'ADD-POST'
-}
-
-type ChangeNewPostTextActionType = {
-    type:'CHANGE-NEW-POST-TEXT'
-    newText:string
-}
-
-type AddMessageActionType = {
-    type:'ADD-MESSAGE'
-}
-
-type ChangeTextareaDialogsActionType = {
-    type:'CHANGE-TEXTAREA-DIALOGS'
-    newTextarea: string
 }
 
 export default store
-//
