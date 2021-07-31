@@ -8,14 +8,11 @@ import News from './News/News';
 import Music from './Music/Music';
 import Settings from './Settings/Settings';
 import {Route} from 'react-router-dom';
-import {StateType,} from './Redux/State';
+import {ActionTypes, StateType,} from './Redux/State';
 
 type AppStateType = {
     appState: StateType
-    addPost: () => void
-    updateNewPostText: (newText: string) => void
-    addMessage: () => void
-    onChangeTextareaDialogs:(newTextarea: string) => void
+    dispatch: (action:ActionTypes) => void
 }
 
 function App(props: AppStateType) {
@@ -28,16 +25,15 @@ function App(props: AppStateType) {
                        render={() => <Profile
                            newPostText={props.appState.profilePage.newPostText}
                            posts={props.appState.profilePage.posts}
-                           addPost={props.addPost}
-                           updateNewPostText={props.updateNewPostText}
+                           dispatch={props.dispatch}
+
                        />}
                 />
                 <Route path={'/dialogs'}
                        render={() => <Dialogs
                            dialogs={props.appState.dialogPage.dialogs}
                            messages={props.appState.dialogPage.messages}
-                           addMessage={props.addMessage}
-                           onChangeTextareaDialogs={props.onChangeTextareaDialogs}
+                           dispatch={props.dispatch}
                            newMessageTextarea={props.appState.dialogPage.newMessageTextarea}
                        />
                        }

@@ -12,16 +12,18 @@ const MyPosts = (props: ProfilePropsType) => {
     let postsElements = props.posts.map(p => <Post post={p}/>)
 
     const addPost = () => {
-        props.addPost()
+        props.dispatch({type:'ADD-POST'})
     }
 
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.updateNewPostText(e.currentTarget.value)
+        const newText = e.currentTarget.value
+        props.dispatch({type:'CHANGE-NEW-POST-TEXT', newText:newText})
+
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if(e.key === 'Enter') {
-            props.addPost()
+            props.dispatch({type:'ADD-POST'})
         }
     }
 

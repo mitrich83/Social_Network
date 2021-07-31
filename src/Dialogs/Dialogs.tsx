@@ -2,12 +2,12 @@ import React, {ChangeEvent, KeyboardEvent, KeyboardEventHandler} from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
-import {DialogsPageDataType} from '../Redux/State';
+import {ActionTypes, DialogsPageDataType} from '../Redux/State';
 
 export type DialogsPagePropsType = DialogsPageDataType & {
-    addMessage: () => void
+    dispatch: (action:ActionTypes) => void
     newMessageTextarea: string
-    onChangeTextareaDialogs: (newTextarea: string) => void
+
 }
 
 const Dialogs = (props: DialogsPagePropsType) => {
@@ -18,11 +18,13 @@ const Dialogs = (props: DialogsPagePropsType) => {
     let messagesElements = props.messages.map(m => <MessageItem message={m}/>);
 
     const onChangeTextareaDialogs = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChangeTextareaDialogs(e.currentTarget.value)
+        const newTextarea = e.currentTarget.value
+        props.dispatch({type:'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea})
+
     }
 
     const addMessage = () => {
-        props.addMessage()
+        props.dispatch({type:'ADD-MESSAGE'})
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter') {
