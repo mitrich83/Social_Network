@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import Header from './Header/Header';
-import Navbar from './Navbar/Navbar';
+import Header from './components/Header/Header';
+import Navbar from './components/Navbar/Navbar';
 import Profile from './Profile/Profile';
 import Dialogs from './Dialogs/Dialogs';
-import News from './News/News';
-import Music from './Music/Music';
-import Settings from './Settings/Settings';
+import News from './components/News/News';
+import Music from './components/Music/Music';
+import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
 import {ActionTypes, StateType,} from './Redux/State';
 

@@ -1,7 +1,6 @@
-const ADD_POST = 'ADD-POST'
-const CHANGE_NEW_POST_TEXT = 'CHANGE-NEW-POST-TEXT'
-const ADD_MESSAGE = 'ADD-MESSAGE'
-const CHANGE_TEXTAREA_DIALOGS = 'CHANGE-TEXTAREA-DIALOGS'
+import profilePageReducer, {addPostActionCreator, changeNewPostActionCreator} from './profilePageReducer';
+import dialogPageReducer, {AddMessageActionCreator, changeTextareaDialogsActionCreator} from './dialogPageReducer';
+import sideBarReducer from './sideBarReducer';
 
 export type StoreType = {
     _state:StateType
@@ -14,6 +13,7 @@ export type StoreType = {
 export type StateType = {
     profilePage: ProfileDataType
     dialogPage: DialogsPageDataType
+    sideBar: SideBarDataType
 }
 
 export type DialogsPageDataType = {
@@ -25,6 +25,7 @@ export type ProfileDataType = {
     posts: Array<PostType>
     newPostText: string
 }
+export type SideBarDataType = {}
 
 export type DialogItemType = {
     name: string,
@@ -47,13 +48,6 @@ export type ActionTypes =
     ReturnType<typeof changeNewPostActionCreator> |
     ReturnType<typeof AddMessageActionCreator> |
     ReturnType<typeof changeTextareaDialogsActionCreator>
-
-export const addPostActionCreator = () => ({type: 'ADD-POST'} as const)
-export const changeNewPostActionCreator = (newText:string) =>
-    ({type:'CHANGE-NEW-POST-TEXT', newText: newText} as const)
-export const AddMessageActionCreator = ()=> ({type: 'ADD-MESSAGE'} as const)
-export const changeTextareaDialogsActionCreator = (newTextarea: string) =>
-    ({type: 'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea} as const)
 
 let store:StoreType = {
     _state:  {
@@ -81,8 +75,9 @@ let store:StoreType = {
                 {id: 5, message: 'yo'},
                 {id: 6, message: 'yo'},
             ],
-            newMessageTextarea: 'Hi everyone!'
+            newMessageTextarea: ''
         },
+        sideBar:{}
     },
     _callSubscriber() {
         console.log('State changed')
@@ -96,36 +91,16 @@ let store:StoreType = {
     },
 
     dispatch(action ){
-        if(action.type === ADD_POST){
-            let text = this._state.profilePage.newPostText.trim()
-            if (text === '') return
-            const newPost: PostType = {
-                id: 5,
-                message: this._state.profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.posts.push(newPost);
-            this._state.profilePage.newPostText = ''
-            this._callSubscriber();
-        } else if (action.type === CHANGE_NEW_POST_TEXT){
-            this._state.profilePage.newPostText = action.newText
-            this._callSubscriber()
-        } else if (action.type === ADD_MESSAGE){
-            const text = this._state.dialogPage.newMessageTextarea.trim()
-            if(text === '') return
 
-            const newMessage:MessageItemType = {
-                id: 7,
-                message: this._state.dialogPage.newMessageTextarea.trim()
-            }
-            this._state.dialogPage.messages.push(newMessage)
-            this._state.dialogPage.newMessageTextarea =''
-            this._callSubscriber()
-        } else if (action.type === CHANGE_TEXTAREA_DIALOGS) {
-            this._state.dialogPage.newMessageTextarea = action.newTextarea
-            this._callSubscriber()
-        }
+        this._state.profilePage = profilePageReducer(this._state.profilePage, action)
+        this._state.dialogPage = dialogPageReducer(this._state.dialogPage, action)
+       // this._state.sideBar = sideBarReducer(this._state.sideBar, action)
+
+        this._callSubscriber(); // (this._state)
+
     }
 }
 
 export default store
+// window.store = store
+
