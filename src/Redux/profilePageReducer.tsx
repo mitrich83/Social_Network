@@ -1,10 +1,19 @@
 import React from 'react';
-import {ActionTypes, PostType, ProfileDataType} from './State';
+import {ActionTypes, PostType, ProfileDataType} from './store';
 
 const ADD_POST = 'ADD-POST'
 const CHANGE_NEW_POST_TEXT = 'CHANGE-NEW-POST-TEXT'
 
-const profilePageReducer = (state: ProfileDataType, action: ActionTypes):ProfileDataType => {
+
+const initialState = {
+    posts: [
+        {id: 1, message: 'Hi', likesCount: 12},
+        {id: 2, message: 'How are you', likesCount: 10},
+    ],
+    newPostText: 'it-kamasutra'
+}
+
+const profilePageReducer = (state: ProfileDataType = initialState, action: ActionTypes):ProfileDataType => {
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText.trim()

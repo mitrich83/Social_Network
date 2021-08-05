@@ -1,6 +1,5 @@
 import profilePageReducer, {addPostActionCreator, changeNewPostActionCreator} from './profilePageReducer';
 import dialogPageReducer, {AddMessageActionCreator, changeTextareaDialogsActionCreator} from './dialogPageReducer';
-import sideBarReducer from './sideBarReducer';
 
 export type StoreType = {
     _state:StateType
@@ -13,7 +12,6 @@ export type StoreType = {
 export type StateType = {
     profilePage: ProfileDataType
     dialogPage: DialogsPageDataType
-    sideBar: SideBarDataType
 }
 
 export type DialogsPageDataType = {
@@ -25,7 +23,6 @@ export type ProfileDataType = {
     posts: Array<PostType>
     newPostText: string
 }
-export type SideBarDataType = {}
 
 export type DialogItemType = {
     name: string,
@@ -76,8 +73,7 @@ let store:StoreType = {
                 {id: 6, message: 'yo'},
             ],
             newMessageTextarea: ''
-        },
-        sideBar:{}
+        }
     },
     _callSubscriber() {
         console.log('State changed')
@@ -94,7 +90,6 @@ let store:StoreType = {
 
         this._state.profilePage = profilePageReducer(this._state.profilePage, action)
         this._state.dialogPage = dialogPageReducer(this._state.dialogPage, action)
-       // this._state.sideBar = sideBarReducer(this._state.sideBar, action)
 
         this._callSubscriber(); // (this._state)
 
