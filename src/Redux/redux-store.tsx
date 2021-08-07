@@ -1,11 +1,11 @@
 import React from 'react';
 import {combineReducers, createStore} from 'redux';
 import profilePageReducer from './profilePageReducer';
-import dialogPageReducer from './dialogPageReducer';
+import dialogsPageReducer from './dialogsPageReducer';
 
 const rootReducer = combineReducers({
     profilePage: profilePageReducer,
-    dialogPage: dialogPageReducer
+    dialogsPage: dialogsPageReducer
     }
 )
 

@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
-import {DialogsPageDataType} from '../Redux/dialogPageReducer';
+import {DialogsPageDataType} from '../Redux/dialogsPageReducer';
 
 export type DialogsPagePropsType = {
     onChangeTextareaDialogs:(newTextarea:string)=> void

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
     AddMessageActionCreator,
-    changeTextareaDialogsActionCreator, DialogItemType,
+    changeTextareaDialogsActionCreator,
     DialogsPageDataType
-} from '../Redux/dialogPageReducer';
+} from '../Redux/dialogsPageReducer';
 import Dialogs from './Dialogs';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
@@ -18,9 +18,9 @@ type mapDispatchToPropsType = {
     onChangeTextareaDialogs: (newTextarea: string) => void
 }
 
-const mapStateToProps =(state: AppStateType): any => {
+const mapStateToProps =(state: mapStateToPropsType): mapStateToPropsType => {
     return {
-        dialogsPage: state.dialogPage,
+        dialogsPage: state.dialogsPage,
     }
 }
 

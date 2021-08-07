@@ -19,7 +19,7 @@ type mapDispatchToPropsType = {
 
 const mapStateToProps = (state: mapStateToPropsType):mapStateToPropsType => {
     return {
-        profilePage:state.profilePage
+        profilePage: state.profilePage
     }
 }
 

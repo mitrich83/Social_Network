@@ -42,12 +42,10 @@ const initialState: DialogsPageDataType = {
     newMessageTextarea: ''
 }
 
-
-const dialogPageReducer = (state: DialogsPageDataType = initialState, action: ActionDialogsTypes): DialogsPageDataType => {
+const dialogsPageReducer = (state: DialogsPageDataType = initialState, action: ActionDialogsTypes): DialogsPageDataType => {
 
     switch (action.type) {
         case ADD_MESSAGE:
-            // ...
             const text = state.newMessageTextarea.trim()
             if (text === '') return state
             const newMessage: MessageItemType = {
@@ -75,4 +73,4 @@ export const AddMessageActionCreator = () => ({type: 'ADD-MESSAGE'} as const)
 export const changeTextareaDialogsActionCreator = (newTextarea: string) =>
     ({type: 'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea} as const)
 
-export default dialogPageReducer
+export default dialogsPageReducer
