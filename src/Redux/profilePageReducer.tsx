@@ -1,4 +1,5 @@
 import React from 'react';
+import {v1} from 'uuid';
 
 
 const ADD_POST = 'ADD-POST'
@@ -7,7 +8,7 @@ const CHANGE_NEW_POST_TEXT = 'CHANGE-NEW-POST-TEXT'
 export type PostType = {
     message: string
     image?: string
-    id: number
+    id: string
     likesCount: number
 }
 
@@ -22,8 +23,8 @@ export type ActionProfileTypes =
 
 const initialState: ProfileDataType = {
     posts: [
-        {id: 1, message: 'Hi', likesCount: 12},
-        {id: 2, message: 'How are you', likesCount: 10},
+        {id: v1(), message: 'Hi', likesCount: 12},
+        {id: v1(), message: 'How are you', likesCount: 10},
     ],
     newPostText: 'it-kamasutra'
 }
@@ -34,7 +35,7 @@ const profilePageReducer = (state: ProfileDataType = initialState, action: Actio
             let text = state.newPostText.trim()
             if (text === '') return state
             const newPost: PostType = {
-                id: 5,
+                id: v1(),
                 message: state.newPostText,
                 likesCount: 0
             }
