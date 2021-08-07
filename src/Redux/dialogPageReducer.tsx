@@ -54,12 +54,15 @@ const dialogPageReducer = (state:DialogsPageDataType  = initialState, action: Ac
                 id: 7,
                 message: state.newMessageTextarea.trim()
             }
-            state.messages.push(newMessage)
-            state.newMessageTextarea = ''
-            return state
+            const newState = {...state}
+            newState.messages = [...state.messages]
+            newState.messages.push(newMessage)
+            newState.newMessageTextarea = ''
+            return newState
         case CHANGE_TEXTAREA_DIALOGS:
-            state.newMessageTextarea = action.newTextarea
-            return state
+            const copyState = {...state}
+            copyState.newMessageTextarea = action.newTextarea
+            return copyState
         default:
             return state
     }

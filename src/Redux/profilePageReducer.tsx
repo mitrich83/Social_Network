@@ -29,7 +29,6 @@ const initialState:ProfileDataType = {
 }
 
 const profilePageReducer = (state: ProfileDataType = initialState, action: ActionProfileTypes):ProfileDataType => {
-    console.log(state)
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText.trim()
@@ -39,12 +38,15 @@ const profilePageReducer = (state: ProfileDataType = initialState, action: Actio
                 message: state.newPostText,
                 likesCount: 0
             }
-            state.posts.push(newPost);
-            state.newPostText = ''
-            return state
+            const newState = {...state}
+            newState.posts = [...state.posts]
+            newState.posts.push(newPost)
+            newState.newPostText = ''
+            return newState
         case CHANGE_NEW_POST_TEXT:
-            state.newPostText = action.newText
-            return state
+            const copyState = {...state}
+            copyState.newPostText = action.newText
+            return copyState
         default:
             return state
     }
