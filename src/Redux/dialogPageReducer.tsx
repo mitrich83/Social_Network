@@ -1,10 +1,28 @@
 import React from 'react';
-import {ActionTypes, DialogsPageDataType, MessageItemType} from './store';
 
 const ADD_MESSAGE = 'ADD-MESSAGE'
 const CHANGE_TEXTAREA_DIALOGS = 'CHANGE-TEXTAREA-DIALOGS'
 
-const initialState = {
+export type DialogItemType = {
+    name: string,
+    id: number
+}
+export type MessageItemType = {
+    message: string
+    id: number
+}
+
+export type DialogsPageDataType = {
+    dialogs: Array<DialogItemType>
+    messages: Array<MessageItemType>
+    newMessageTextarea: string
+}
+
+export type ActionDialogsTypes =
+    ReturnType<typeof AddMessageActionCreator> |
+    ReturnType<typeof changeTextareaDialogsActionCreator>
+
+const initialState:DialogsPageDataType = {
     dialogs: [
         {id: 1, name: 'Dimych'},
         {id: 2, name: 'Andrey'},
@@ -24,9 +42,12 @@ const initialState = {
     newMessageTextarea: ''
 }
 
-const dialogPageReducer = (state: DialogsPageDataType = initialState, action: ActionTypes):DialogsPageDataType => {
+
+const dialogPageReducer = (state:DialogsPageDataType  = initialState, action: ActionDialogsTypes):DialogsPageDataType => {
+    console.log(state)
     switch (action.type) {
         case ADD_MESSAGE:
+            // ...
             const text = state.newMessageTextarea.trim()
             if (text === '') return state
             const newMessage: MessageItemType = {

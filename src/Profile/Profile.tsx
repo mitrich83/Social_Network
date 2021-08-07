@@ -1,23 +1,12 @@
 import React from 'react';
-import MyPosts from './MyPosts/MyPosts';
 import ProfileInfo from './ProfileInfo';
-import {ActionTypes, ProfileDataType} from '../Redux/store';
+import MyPostsContainer from './MyPosts/MyPostsContainer';
 
-export type  ProfilePropsType = ProfileDataType & {
-    dispatch: (action:ActionTypes) => void
-    newPostText: string
-
-};
-const Profile = (props: ProfilePropsType) => {
+const Profile = () => {
     return (
         <div>
             <ProfileInfo/>
-            <MyPosts
-                posts={props.posts}
-                dispatch={props.dispatch}
-                newPostText={props.newPostText}
-
-            />
+            <MyPostsContainer/>
         </div>
     )
 }

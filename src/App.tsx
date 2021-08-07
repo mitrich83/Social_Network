@@ -3,39 +3,23 @@ import './App.css';
 import Header from './components/Header/Header';
 import Navbar from './components/Navbar/Navbar';
 import Profile from './Profile/Profile';
-import Dialogs from './Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
-import {ActionTypes, StateType,} from './Redux/store';
+import DialogsContainer from './Dialogs/Dialogs.Container';
 
-type AppStateType = {
-    appState: StateType
-    dispatch: (action:ActionTypes) => void
-}
-
-function App(props: AppStateType) {
+function App() {
     return (
         <div className={'app-wrapper'}>
             <Header/>
             <Navbar/>
             <div className={'app-wrapper-content'}>
                 <Route path={'/profile'}
-                       render={() => <Profile
-                           newPostText={props.appState.profilePage.newPostText}
-                           posts={props.appState.profilePage.posts}
-                           dispatch={props.dispatch}
-
-                       />}
+                       render={() => <Profile />}
                 />
                 <Route path={'/dialogs'}
-                       render={() => <Dialogs
-                           dialogs={props.appState.dialogPage.dialogs}
-                           messages={props.appState.dialogPage.messages}
-                           dispatch={props.dispatch}
-                           newMessageTextarea={props.appState.dialogPage.newMessageTextarea}
-                       />
+                       render={() => <DialogsContainer />
                        }
                 />
                 <Route path={'/news'} render={() => <News/>}/>

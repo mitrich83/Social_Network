@@ -2,33 +2,36 @@ import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
-import {ActionTypes, DialogsPageDataType} from '../Redux/store';
-import {AddMessageActionCreator, changeTextareaDialogsActionCreator} from '../Redux/dialogPageReducer';
+import {DialogsPageDataType} from '../Redux/dialogPageReducer';
 
-
-export type DialogsPagePropsType = DialogsPageDataType & {
-    dispatch: (action: ActionTypes) => void
-    newMessageTextarea: string
+export type DialogsPagePropsType = {
+    onChangeTextareaDialogs:(newTextarea:string)=> void
+    addMessage:()=> void
+    dialogsPage: DialogsPageDataType
 }
 
 const Dialogs = (props: DialogsPagePropsType) => {
+    let dialogsElements = props.dialogsPage.dialogs.map(
+        d => <DialogItem key={d.id} dialog={d}
+        />
+    );
 
-    let dialogsElements = props.dialogs.map(d => <DialogItem dialog={d}/>);
-
-    let messagesElements = props.messages.map(m => <MessageItem message={m}/>);
+    let messagesElements = props.dialogsPage.messages.map(
+        m => <MessageItem key={m.id} message={m}
+        />
+    );
 
     const onChangeTextareaDialogs = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const newTextarea = e.currentTarget.value
-        props.dispatch(changeTextareaDialogsActionCreator(newTextarea))
-
+        props.onChangeTextareaDialogs(newTextarea)
     }
 
     const addMessage = () => {
-        props.dispatch(AddMessageActionCreator())
+        props.addMessage()
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter') {
-            addMessage()
+            props.addMessage()
         }
     }
 
@@ -43,7 +46,7 @@ const Dialogs = (props: DialogsPagePropsType) => {
                     <div>
                     <textarea
                         placeholder={'Enter your message'}
-                        value={props.newMessageTextarea}
+                        value={props.dialogsPage.newMessageTextarea}
                         onChange={onChangeTextareaDialogs}
                         onKeyPress={onKeyPressHandler}
                     />
