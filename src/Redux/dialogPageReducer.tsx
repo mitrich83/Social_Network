@@ -22,7 +22,7 @@ export type ActionDialogsTypes =
     ReturnType<typeof AddMessageActionCreator> |
     ReturnType<typeof changeTextareaDialogsActionCreator>
 
-const initialState:DialogsPageDataType = {
+const initialState: DialogsPageDataType = {
     dialogs: [
         {id: 1, name: 'Dimych'},
         {id: 2, name: 'Andrey'},
@@ -43,8 +43,8 @@ const initialState:DialogsPageDataType = {
 }
 
 
-const dialogPageReducer = (state:DialogsPageDataType  = initialState, action: ActionDialogsTypes):DialogsPageDataType => {
-    console.log(state)
+const dialogPageReducer = (state: DialogsPageDataType = initialState, action: ActionDialogsTypes): DialogsPageDataType => {
+
     switch (action.type) {
         case ADD_MESSAGE:
             // ...
@@ -54,20 +54,24 @@ const dialogPageReducer = (state:DialogsPageDataType  = initialState, action: Ac
                 id: 7,
                 message: state.newMessageTextarea.trim()
             }
-            const newState = {...state}
-            newState.messages = [...state.messages]
-            newState.messages.push(newMessage)
-            newState.newMessageTextarea = ''
-            return newState
-        case CHANGE_TEXTAREA_DIALOGS:
-            const copyState = {...state}
-            copyState.newMessageTextarea = action.newTextarea
-            return copyState
+            return (
+                {
+                    ...state,
+                    newMessageTextarea: '',
+                    messages: [...state.messages, newMessage]
+                }
+            );
+        case
+        CHANGE_TEXTAREA_DIALOGS:
+            return {
+                ...state,
+                newMessageTextarea: action.newTextarea
+            }
         default:
             return state
     }
 }
-export const AddMessageActionCreator = ()=> ({type: 'ADD-MESSAGE'} as const)
+export const AddMessageActionCreator = () => ({type: 'ADD-MESSAGE'} as const)
 export const changeTextareaDialogsActionCreator = (newTextarea: string) =>
     ({type: 'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea} as const)
 

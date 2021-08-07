@@ -20,7 +20,7 @@ export type ActionProfileTypes =
     ReturnType<typeof addPostActionCreator> |
     ReturnType<typeof changeNewPostActionCreator>
 
-const initialState:ProfileDataType = {
+const initialState: ProfileDataType = {
     posts: [
         {id: 1, message: 'Hi', likesCount: 12},
         {id: 2, message: 'How are you', likesCount: 10},
@@ -28,7 +28,7 @@ const initialState:ProfileDataType = {
     newPostText: 'it-kamasutra'
 }
 
-const profilePageReducer = (state: ProfileDataType = initialState, action: ActionProfileTypes):ProfileDataType => {
+const profilePageReducer = (state: ProfileDataType = initialState, action: ActionProfileTypes): ProfileDataType => {
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText.trim()
@@ -38,22 +38,27 @@ const profilePageReducer = (state: ProfileDataType = initialState, action: Actio
                 message: state.newPostText,
                 likesCount: 0
             }
-            const newState = {...state}
-            newState.posts = [...state.posts]
-            newState.posts.push(newPost)
-            newState.newPostText = ''
-            return newState
+            return (
+                {
+                    ...state,
+                    newPostText: '',
+                    posts: [...state.posts, newPost]
+                }
+            )
         case CHANGE_NEW_POST_TEXT:
-            const copyState = {...state}
-            copyState.newPostText = action.newText
-            return copyState
+            return (
+                {
+                    ...state,
+                    newPostText: action.newText
+                }
+            )
         default:
             return state
     }
 }
 
 export const addPostActionCreator = () => ({type: 'ADD-POST'} as const)
-export const changeNewPostActionCreator = (newText:string) =>
-    ({type:'CHANGE-NEW-POST-TEXT', newText: newText} as const)
+export const changeNewPostActionCreator = (newText: string) =>
+    ({type: 'CHANGE-NEW-POST-TEXT', newText: newText} as const)
 
 export default profilePageReducer
