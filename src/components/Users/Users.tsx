@@ -10,7 +10,7 @@ type UsersPropsType = {
 }
 
 export const Users = (props: UsersPropsType) => {
-
+    console.log(props.usersPage.users)
     return (
         <div>
             {
@@ -21,8 +21,9 @@ export const Users = (props: UsersPropsType) => {
                         </div>
                          <div>
                              {u.followed
-                                 ? <button onClick={() => {props.follow(u.id)}}>follow</button>
-                                 : <button onClick={() => {props.unfollow(u.id)}}>unfollow</button>
+                                 ? <button onClick={() => {props.unfollow(u.id)}}>Unfollow</button>
+
+                                 : <button onClick={() => {props.follow(u.id)}}>Follow</button>
                              }
                         </div>
                     </span>

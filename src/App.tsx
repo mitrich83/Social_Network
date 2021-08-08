@@ -23,7 +23,7 @@ const App = ()=> {
                        render={() => <DialogsContainer/>
                        }
                 />
-                <Route path={'users'}
+                <Route path={'/users'}
                        render={()=> <UsersContainer/>}
                 />
                 <Route path={'/news'} render={() => <News/>}/>
