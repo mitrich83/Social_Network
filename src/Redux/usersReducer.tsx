@@ -6,15 +6,15 @@ const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET_USERS'
 
 export type UserType = {
+    name: string,
     id: string,
-    photoUrl:string,
-    followed: boolean,
-    name:string,
-    status: string,
-    location: {
-        city: string,
-        country:string
-    }
+    uniqueUrlName: null | string,
+    photos: {
+        small: null | string,
+        large: null | string
+    },
+    status: null | string,
+    followed: boolean
 }
 
 export type UsersDataType = {
@@ -26,22 +26,11 @@ export type ActionCreatorTypes =
     ReturnType<typeof unfollowAC> |
     ReturnType<typeof setUsersAC>
 
-const initialState:UsersDataType = {
-    users: [
-        {id: v1(), photoUrl: 'https://cdn.iz.ru/sites/default/files/styles/900x506/public/article-2020-12/_AMA4805_1.jpg?itok=dy1Eu-eB',
-            followed: true, name: 'Dimych', status: 'Boss', location: {city: 'Minsk', country: 'Belarus'}},
-        {id: v1(), photoUrl: 'https://cdn.iz.ru/sites/default/files/styles/900x506/public/article-2020-12/_AMA4805_1.jpg?itok=dy1Eu-eB',
-            followed: true, name: 'Andrey', status: 'Boss', location: {city: 'Moscow', country: 'Russia'}},
-        {id: v1(), photoUrl: 'https://cdn.iz.ru/sites/default/files/styles/900x506/public/article-2020-12/_AMA4805_1.jpg?itok=dy1Eu-eB',
-            followed: false, name: 'Anton', status: 'Boss', location: {city: 'Grodno', country: 'Belarus'}},
-        {id: v1(), photoUrl: 'https://cdn.iz.ru/sites/default/files/styles/900x506/public/article-2020-12/_AMA4805_1.jpg?itok=dy1Eu-eB',
-            followed: false, name: 'Sergey', status: 'Boss', location: {city: 'Kiev', country: 'Ukraine'}},
-        {id: v1(), photoUrl: 'https://cdn.iz.ru/sites/default/files/styles/900x506/public/article-2020-12/_AMA4805_1.jpg?itok=dy1Eu-eB',
-            followed: true, name: 'Vladimir', status: 'Boss', location: {city: 'Rostov', country: 'Russia'}},
-    ],
+const initialState: UsersDataType = {
+    users: [],
 }
 
-const usersReducer = (state:UsersDataType = initialState, action:ActionCreatorTypes):UsersDataType => {
+const usersReducer = (state: UsersDataType = initialState, action: ActionCreatorTypes): UsersDataType => {
     switch (action.type) {
         case FOLLOW:
             return {
@@ -67,15 +56,15 @@ const usersReducer = (state:UsersDataType = initialState, action:ActionCreatorTy
             }
         case SET_USERS:
             return {
-                ...state, users: [...state.users, ...action.users]
+                ...state, users: [...action.users]
             }
         default:
             return state
     }
 }
 
-export const followAC = (userId:string) => ({type: FOLLOW, userId} as const)
-export const unfollowAC = (userId:string) => ({type: UNFOLLOW, userId} as const)
-export const setUsersAC = (users:UserType[]) => ({type: SET_USERS, users} as const)
+export const followAC = (userId: string) => ({type: FOLLOW, userId} as const)
+export const unfollowAC = (userId: string) => ({type: UNFOLLOW, userId} as const)
+export const setUsersAC = (users: UserType[]) => ({type: SET_USERS, users} as const)
 
 export default usersReducer
