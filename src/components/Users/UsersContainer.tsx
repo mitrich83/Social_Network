@@ -5,6 +5,7 @@ import {AppStateType} from '../../Redux/redux-store';
 import {followAC, setUsersAC, unfollowAC, UsersDataType, UserType} from '../../Redux/usersReducer';
 import {Dispatch} from 'redux';
 
+
 type mapStateToPropsType = {
     usersPage: UsersDataType
 }
@@ -13,6 +14,8 @@ type mapDispatchToPropsType = {
     unfollow: (userId: string) => void
     setUsers: (users: UserType[]) => void
 }
+
+//const PropsType = mapStateToPropsType & mapDispatchToPropsType
 
 const mapStateToProps = (state: mapStateToPropsType): mapStateToPropsType => {
     return {
