@@ -2,7 +2,7 @@ import React from 'react';
 import {combineReducers, createStore} from 'redux';
 import profilePageReducer from './profilePageReducer';
 import dialogsPageReducer from './dialogsPageReducer';
-import usersReducer from './usersReducer';
+import usersReducer from './users-reducer';
 
 const rootReducer = combineReducers({
     profilePage: profilePageReducer,
