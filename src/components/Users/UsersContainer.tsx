@@ -18,16 +18,15 @@ type mapStateToPropsType = {
     usersPage: UsersDataType,
     pageSize: number,
     totalUsersCount: number,
-    currentPage: number
+    currentPage:  number
 }
 type mapDispatchToPropsType = {
     follow: (userId: string) => void
     unfollow: (userId: string) => void
     setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
+    setTotalUsersCount: (totalUsersCount: number) => void
 }
-
-//const PropsType = mapStateToPropsType & mapDispatchToPropsType
 
 const mapStateToProps = (state: mapStateToPropsType): mapStateToPropsType => {
     return {
@@ -59,6 +58,8 @@ const mapDispatchToProps = (dispatch: Dispatch):mapDispatchToPropsType => {
 
 }
 
-const UsersContainer = connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(Users)
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(Users)
 
-export default UsersContainer
+// <mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>
+
