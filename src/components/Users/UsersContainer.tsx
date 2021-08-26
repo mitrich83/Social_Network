@@ -5,7 +5,7 @@ import {
     followAC,
     setCurrentPageAC,
     setTotalUsersCountAC,
-    setUsersAC,
+    setUsersAC, toggleFetchingAC,
     unfollowAC,
     UsersDataType,
     UserType
@@ -13,6 +13,8 @@ import {
 import {Dispatch} from 'redux';
 import axios from 'axios';
 import {Users} from './Users';
+import {Preloader} from '../common/preloader/Preloader';
+import preloader from '../common/preloader/Fidget-spinner.gif';
 
 type UsersPropsType = {
     usersPage: UsersDataType,
@@ -24,13 +26,16 @@ type UsersPropsType = {
     setUsers: (users: UserType[]) => void
     setTotalUsersCount: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
+    toggleFetching: (isFetching: boolean) => void
+    isFetching: boolean
 }
 
 type mapStateToPropsType = {
     usersPage: UsersDataType,
     pageSize: number,
     totalUsersCount: number,
-    currentPage:  number
+    currentPage: number,
+    isFetching: boolean
 }
 type mapDispatchToPropsType = {
     follow: (userId: string) => void
@@ -38,13 +43,15 @@ type mapDispatchToPropsType = {
     setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
     setTotalUsersCount: (totalUsersCount: number) => void
+    toggleFetching: (isFetching: boolean) => void
 }
 
 class UsersContainer extends React.Component<UsersPropsType> {
-
     componentDidMount() {
+        this.props.toggleFetching(true)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
             .then(response => {
+                this.props.toggleFetching(false)
                 this.props.setUsers(response.data.items);
                 this.props.setTotalUsersCount(response.data.totalCount);
             });
@@ -52,25 +59,29 @@ class UsersContainer extends React.Component<UsersPropsType> {
 
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber);
+        this.props.toggleFetching(true)
 
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
             .then(response => {
+                this.props.toggleFetching(false)
                 this.props.setUsers(response.data.items)
             })
     }
 
     render() {
 
-        return <Users
-            totalUsersCount = {this.props.totalUsersCount}
-            pageSize ={this.props.pageSize}
-            usersPage = {this.props.usersPage}
-            currentPage = {this.props.currentPage}
-            onPageChanged= {this.onPageChanged}
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}
-
-        />
+        return <>
+            {this.props.isFetching ? <Preloader />: ''}
+            <Users
+                totalUsersCount={this.props.totalUsersCount}
+                pageSize={this.props.pageSize}
+                usersPage={this.props.usersPage}
+                currentPage={this.props.currentPage}
+                onPageChanged={this.onPageChanged}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
+            />
+        </>
     }
 }
 
@@ -79,11 +90,12 @@ const mapStateToProps = (state: mapStateToPropsType): mapStateToPropsType => {
         usersPage: state.usersPage,
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage
+        currentPage: state.usersPage.currentPage,
+        isFetching: state.usersPage.isFetching
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch):mapDispatchToPropsType => {
+const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return {
         follow: (userId: string) => {
             dispatch(followAC(userId));
@@ -99,15 +111,17 @@ const mapDispatchToProps = (dispatch: Dispatch):mapDispatchToPropsType => {
         },
         setTotalUsersCount: (totalUsersCount: number) => {
             dispatch(setTotalUsersCountAC(totalUsersCount))
+        },
+        toggleFetching: (isFetching: boolean) => {
+            dispatch(toggleFetchingAC(isFetching))
         }
     }
 
 }
 
 
-
 // @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
 
-// <mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>
+//<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>
 
