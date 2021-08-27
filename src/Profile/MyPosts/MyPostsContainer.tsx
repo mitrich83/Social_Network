@@ -2,7 +2,7 @@ import React from 'react';
 import {
     addPostActionCreator,
     changeNewPostActionCreator, ProfileDataType
-} from '../../Redux/profilePageReducer';
+} from '../../Redux/profile-reducer';
 import MyPosts from './MyPosts';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';

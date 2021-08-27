@@ -10,25 +10,11 @@ import {
     UsersDataType,
     UserType
 } from '../../Redux/users-reducer';
-import {Dispatch} from 'redux';
 import axios from 'axios';
 import {Users} from './Users';
 import {Preloader} from '../common/preloader/Preloader';
-import preloader from '../common/preloader/Fidget-spinner.gif';
 
-type UsersPropsType = {
-    usersPage: UsersDataType,
-    pageSize: number
-    totalUsersCount: number
-    currentPage: 1 | number
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
-    setUsers: (users: UserType[]) => void
-    setTotalUsersCount: (users: UserType[]) => void
-    setCurrentPage: (pageNumber: number) => void
-    toggleFetching: (isFetching: boolean) => void
-    isFetching: boolean
-}
+type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType
 
 type mapStateToPropsType = {
     usersPage: UsersDataType,
@@ -37,14 +23,14 @@ type mapStateToPropsType = {
     currentPage: number,
     isFetching: boolean
 }
-/*type mapDispatchToPropsType = {
+type mapDispatchToPropsType = {
     follow: (userId: string) => void
     unfollow: (userId: string) => void
     setUsers: (users: UserType[]) => void
     setCurrentPage: (pageNumber: number) => void
     setTotalUsersCount: (totalUsersCount: number) => void
     toggleFetching: (isFetching: boolean) => void
-}*/
+}
 
 class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {
@@ -84,7 +70,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
     }
 }
 
-const mapStateToProps = (state: mapStateToPropsType): mapStateToPropsType => {
+const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     return {
         usersPage: state.usersPage,
         pageSize: state.usersPage.pageSize,
@@ -118,9 +104,6 @@ const mapStateToProps = (state: mapStateToPropsType): mapStateToPropsType => {
 
 }*/
 
+export default connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps,{follow,unfollow,setUsers,setCurrentPage,setTotalUsersCount,toggleFetching})(UsersContainer)
 
-// @ts-ignore
-export default connect(mapStateToProps,{follow,unfollow,setUsers,setCurrentPage,setTotalUsersCount,toggleFetching})(UsersContainer)
-
-//<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>
 

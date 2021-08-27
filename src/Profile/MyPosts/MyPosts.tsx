@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {ProfileDataType} from '../../Redux/profilePageReducer';
+import {ProfileDataType} from '../../Redux/profile-reducer';
 
 type MyPostsPropsType= {
     profilePage:ProfileDataType
