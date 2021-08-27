@@ -21,10 +21,8 @@ export const Users = (props: UsersPropsType) => {
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
-
     return (
         <div>
-
             <div>
                 {pages.map(p => {
                     return <span className={(props.usersPage.currentPage === p) ? s.selectedPage : ''}
