@@ -19,13 +19,12 @@ class HeaderContainer extends React.Component<PropsType> {
                }
             });
     }
-
     render (){
         return <Header {...this.props} />
     }
-
 }
- type MapStateToPropsType = {
+
+type MapStateToPropsType = {
     isAuth: boolean,
     login: string | null
 }
