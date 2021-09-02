@@ -84,34 +84,14 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     }
 }
 
-/*const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
-    return {
-        follow: (userId: string) => {
-            dispatch(follow(userId));
-        },
-        unfollow: (userId: string) => {
-            dispatch(unfollow(userId));
-        },
-        setUsers: (users: UserType[]) => {
-            dispatch(setUsers(users));
-        },
-        setCurrentPage: (pageNumber: number) => {
-            dispatch(setCurrentPage(pageNumber))
-        },
-        setTotalUsersCount: (totalUsersCount: number) => {
-            dispatch(setTotalUsersCount(totalUsersCount))
-        },
-        toggleIsFetching: (isFetching: boolean) => {
-            dispatch(toggleIsFetching(isFetching))
-        }
-    }
-
-}*/
-
-// @ts-ignore
-export default connect(mapStateToProps, {follow,unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching: toggleIsFetching,
+export default connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
+    follow,
+    unfollow,
+    setUsers,
+    setCurrentPage,
+    setTotalUsersCount,
+    toggleIsFetching: toggleIsFetching,
     toggleIsFollowingProgress: toggleIsFollowingProgress,
-
 })(UsersContainer)
 
 

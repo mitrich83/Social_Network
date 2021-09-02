@@ -3,7 +3,6 @@ import {UsersDataType} from '../../Redux/users-reducer';
 import s from './Users.module.css'
 import userPhoto from './images/userPhoto.jpg'
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 import {usersAPI} from '../../api/api';
 
 type UsersPropsType = {
@@ -19,7 +18,6 @@ type UsersPropsType = {
 }
 
 export const Users = (props: UsersPropsType) => {
-
     const pagesCount = Math.ceil(props.usersPage.totalUsersCount / props.usersPage.pageSize);
     const pages = []
     for (let i = 1; i <= pagesCount; i++) {
