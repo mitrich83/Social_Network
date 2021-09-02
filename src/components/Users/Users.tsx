@@ -4,15 +4,18 @@ import s from './Users.module.css'
 import userPhoto from './images/userPhoto.jpg'
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
+import {usersAPI} from '../../api/api';
 
 type UsersPropsType = {
     usersPage: UsersDataType,
     pageSize: number
     totalUsersCount: number
     currentPage: 1 | number
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     onPageChanged: (pageNumber: number) => void
+    followingInProgress: Array<number>,
+    toggleIsFollowingProgress: (isFetching: boolean, userId:number)=> void,
 }
 
 export const Users = (props: UsersPropsType) => {
@@ -46,29 +49,38 @@ export const Users = (props: UsersPropsType) => {
                         </div>
                          <div>
                              {u.followed
-                                 ? <button onClick={() => {
-                                     axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {withCredentials: true})
-                                         .then(response => {
+                                 ? <button
+                                     disabled={props.usersPage.followingInProgress.some(id=> id === u.id)}
+                                     onClick={() => {
+                                     props.toggleIsFollowingProgress(true, u.id)
+                                     usersAPI.unfollow(u.id).
+                                         then(response => {
                                              if (response.data.resultCode === 0) {
                                                  props.unfollow(u.id)
                                              }
+                                             props.toggleIsFollowingProgress(false, u.id)
                                          })
 
                                  }}>Unfollow</button>
 
-                                     : <button onClick={() => {
-                                     axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {withCredentials: true})
-                                     .then(response => {
-                                     if(response.data.resultCode === 0){
-                                     props.follow(u.id)
-                                 }
-                                 })
+                                 : <button
+                                     disabled={props.usersPage.followingInProgress.some(id=> id === u.id)}
+                                     onClick={() => {
+                                     props.toggleIsFollowingProgress(true, u.id)
+                                         debugger
+                                         usersAPI.follow(u.id)
+                                         .then(response => {
+                                             if (response.data.resultCode === 0) {
+                                                 props.follow(u.id)
+                                             }
+                                             props.toggleIsFollowingProgress(false, u.id)
+                                         })
 
                                  }}>Follow</button>
-                                 }
+                             }
                                  </div>
                                  </span>
-                                 <span>
+                    <span>
                                  <span>
                                  <div>{u.name}</div>
                                  <div>{u.status}</div>
@@ -78,12 +90,12 @@ export const Users = (props: UsersPropsType) => {
                                  <div>{'u.location.city'}</div>
                                  </span>
                                  </span>
-                                 </div>)
-                                 }
-                                 </div>
+                </div>)
+            }
+        </div>
 
 
-                                 )
-                             }
+    )
+}
 
 
