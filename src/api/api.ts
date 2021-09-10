@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {setAuthUserDataAC} from '../Redux/auth-reducer';
 
 const instance = axios.create({
     withCredentials: true,
@@ -15,27 +16,27 @@ export const usersAPI = {
             // возращаем не то что вернул get а то что вернул then ( возращает другой промис )
             .then(response => response.data)
     },
-
     follow(userId: number) {
         return instance.post(`follow/${userId}`,{}, {withCredentials: true}).
         then(response => {
             return response
         })
     },
-
     unfollow(userId: number) {
         return instance.delete(`follow/${userId}`, {withCredentials: true}).
         then(response => {
             return response
         })
+    },
+    getProfile(userId: string){
+        return instance.get(`profile/`+ userId);
     }
 }
-/*
-export const followUsers = ( )=> {
-    return instance.post(`follow/${u.id}`, {})
-        .then(response => {
-            if(response.data.resultCode === 0){
-                props.follow(u.id)
-            }
-        })
-}*/
+
+export const authAPI = {
+    me () {
+        return instance.get(`/auth/me`, {withCredentials: true})
+               }
+}
+
+

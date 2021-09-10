@@ -1,5 +1,7 @@
 import React from 'react';
 import {v1} from 'uuid';
+import {usersAPI} from '../api/api';
+import {Dispatch} from 'redux';
 
 
 const ADD_POST = 'ADD-POST'
@@ -98,4 +100,12 @@ export const addPostActionCreator = () => ({type: 'ADD-POST'} as const)
 export const changeNewPostActionCreator = (newText: string) =>
     ({type: 'CHANGE-NEW-POST-TEXT', newText: newText} as const)
 export const setUserProfile = (profile: ProfileType)=> ({type:SET_USER_PROFILE, profile} as const)
+export const getUserProfile = (userId:string) => (dispatch:Dispatch)=> {
+    usersAPI.getProfile(userId)
+        .then(response => {
+            dispatch(setUserProfile(response.data));
+        });
+}
+
+
 export default profileReducer
