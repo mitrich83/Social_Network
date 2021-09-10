@@ -9,8 +9,10 @@ import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
 import {AppStateType} from '../Redux/redux-store';
 
+
 type mapStateToPropsType = {
-    dialogsPage: DialogsPageDataType
+    dialogsPage: DialogsPageDataType,
+    isAuth: boolean
 }
 
 type mapDispatchToPropsType = {
@@ -18,9 +20,10 @@ type mapDispatchToPropsType = {
     onChangeTextareaDialogs: (newTextarea: string) => void
 }
 
-const mapStateToProps =(state: mapStateToPropsType): mapStateToPropsType => {
+const mapStateToProps =(state: AppStateType): mapStateToPropsType => {
     return {
         dialogsPage: state.dialogsPage,
+        isAuth: state.auth.isAuth
     }
 }
 
