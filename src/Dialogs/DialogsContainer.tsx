@@ -6,7 +6,7 @@ import {
 } from '../Redux/dialogsPageReducer';
 import Dialogs from './Dialogs';
 import {connect} from 'react-redux';
-import {Dispatch} from 'redux';
+import {compose, Dispatch} from 'redux';
 import {AppStateType} from '../Redux/redux-store';
 import {withAuthRedirect} from '../hoc/withAuthRedirect';
 
@@ -20,28 +20,29 @@ type mapDispatchToPropsType = {
     onChangeTextareaDialogs: (newTextarea: string) => void
 }
 
-const mapStateToProps =(state: AppStateType): mapStateToPropsType => {
+const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     return {
         dialogsPage: state.dialogsPage,
     }
 }
 
-const mapDispatchToProps =(dispatch: Dispatch): mapDispatchToPropsType=> {
+const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return {
-        addMessage: ()=> {
+        addMessage: () => {
             dispatch(AddMessageActionCreator());
         },
-        onChangeTextareaDialogs: (newTextarea:string)=> {
+        onChangeTextareaDialogs: (newTextarea: string) => {
             dispatch(changeTextareaDialogsActionCreator(newTextarea))
         }
     }
 }
 
-const AuthRedirectComponent = withAuthRedirect(Dialogs)
+export default compose<React.ComponentType>(
+    connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(
+        mapStateToProps, mapDispatchToProps
+    ),
+    withAuthRedirect,
+)(Dialogs)
 
-const DialogsContainer = connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps
-)(AuthRedirectComponent)
 
-export default DialogsContainer;
 

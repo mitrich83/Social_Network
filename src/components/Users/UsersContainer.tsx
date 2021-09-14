@@ -4,13 +4,14 @@ import {AppStateType} from '../../Redux/redux-store';
 import {
     followSuccess, getUsers,
     setCurrentPage,
-   toggleIsFollowingProgress,
+    toggleIsFollowingProgress,
     unfollowSuccess,
     UsersDataType,
 } from '../../Redux/users-reducer';
 import {Users} from './Users';
 import {Preloader} from '../common/preloader/Preloader';
 import {withAuthRedirect} from '../../hoc/withAuthRedirect';
+import {compose} from 'redux';
 
 type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType
 
@@ -32,11 +33,11 @@ type mapDispatchToPropsType = {
 
 class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize )
+        this.props.getUsers(this.props.currentPage, this.props.pageSize)
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsers(pageNumber, this.props.pageSize )
+        this.props.getUsers(pageNumber, this.props.pageSize)
     }
 
     render() {
@@ -67,14 +68,18 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     }
 }
 
-const AuthRedirectComponent = withAuthRedirect(UsersContainer)
 
-export default connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
-    follow: followSuccess,
-    unfollow: unfollowSuccess,
-    setCurrentPage,
-    toggleIsFollowingProgress,
-   getUsers
-})(AuthRedirectComponent)
+export default compose<React.ComponentType>(
+    connect<mapStateToPropsType, mapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {
+        follow: followSuccess,
+        unfollow: unfollowSuccess,
+        setCurrentPage,
+        toggleIsFollowingProgress,
+        getUsers
+    }),
+    withAuthRedirect,
+)
+(UsersContainer)
+
 
 
