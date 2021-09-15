@@ -10,7 +10,6 @@ export type AuthType = {
     email: null | string,
     login: null | string,
     isAuth : boolean
-
 }
 
 export type DataType = {
@@ -52,7 +51,7 @@ export const setAuthUserDataAC = (userId: string, login: string, email: string  
 )
 
 export const getAuthUserData = () => (dispatch:Dispatch)=> {
-    return   authAPI.me()
+    return authAPI.me()
         .then(response => {
             if(response.data.resultCode === 0){
                 let {id, login, email } = response.data.data;

@@ -23,7 +23,7 @@ const Dialogs = (props: DialogsPagePropsType) => {
         />
     );
    
-    if(!props.isAuth) return <Redirect to={'/login'}/>
+    //if(!props.isAuth) return <Redirect to={'/login'}/>
     
         const onChangeTextareaDialogs = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const newTextarea = e.currentTarget.value
