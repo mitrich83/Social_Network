@@ -1,48 +1,26 @@
-import React, {ChangeEvent, KeyboardEvent} from 'react';
+import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileDataType} from '../../Redux/profile-reducer';
+import {DialogForm} from '../../Dialogs/DialogForm';
 
 type MyPostsPropsType= {
     profilePage:ProfileDataType
-    onPostChange: (newText:string)=> void
-    addPost:()=> void
+    addPost:(newMessageTextarea:string)=> void
 }
 
 const MyPosts = (props: MyPostsPropsType) => {
 
     let postsElements = props.profilePage.posts.map(p => <Post key={p.id} post={p}/>)
 
-    const onAddPost = () => {
-        props.addPost()
-    }
-
-    const onPostChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
-        const newText = e.currentTarget.value
-        props.onPostChange(newText)
-
-    }
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if(e.key === 'Enter') {
-            props.addPost()
-        }
+    const onAddPost = (newMessageTextarea:string) => {
+        props.addPost(newMessageTextarea)
     }
 
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
-            <div>
-                <div>
-                    <textarea onChange={onPostChange}
-                              value={props.profilePage.newPostText}
-                              onKeyPress={onKeyPressHandler}
-                    />
-                </div>
-                <div>
-                    <button onClick={onAddPost}>Add post</button>
-                </div>
-            </div>
+            <DialogForm addMessage={onAddPost}/>
             <div className={s.post}>
                 {postsElements}
             </div>

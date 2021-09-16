@@ -1,13 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent} from 'react';
+import React from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
-import {DialogsPageDataType} from '../Redux/dialogsPageReducer';
-import {Redirect} from 'react-router';
+import {DialogForm} from './DialogForm';
+import {DialogsPageDataType} from '../Redux/dialogs-reducer';
 
 export type DialogsPagePropsType = {
-    onChangeTextareaDialogs:(newTextarea:string)=> void
-    addMessage:()=> void
+    addMessage: (newMessageTextarea:string) => void
     dialogsPage: DialogsPageDataType
     isAuth: boolean
 }
@@ -22,21 +21,9 @@ const Dialogs = (props: DialogsPagePropsType) => {
         m => <MessageItem key={m.id} message={m}
         />
     );
-   
-    //if(!props.isAuth) return <Redirect to={'/login'}/>
-    
-        const onChangeTextareaDialogs = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        const newTextarea = e.currentTarget.value
-        props.onChangeTextareaDialogs(newTextarea)
-    }
 
-    const addMessage = () => {
-        props.addMessage()
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter') {
-            props.addMessage()
-        }
+    const addMessage = (newMessageTextarea:string) => {
+        props.addMessage(newMessageTextarea)
     }
 
     return (
@@ -46,19 +33,9 @@ const Dialogs = (props: DialogsPagePropsType) => {
             </div>
             <div className={s.messages}>
                 {messagesElements}
-                <div>
-                    <div>
-                    <textarea
-                        placeholder={'Enter your message'}
-                        value={props.dialogsPage.newMessageTextarea}
-                        onChange={onChangeTextareaDialogs}
-                        onKeyPress={onKeyPressHandler}
-                    />
-                    </div>
-                    <div>
-                        <button onClick={addMessage}>Add message</button>
-                    </div>
-                </div>
+                <DialogForm addMessage={addMessage}
+
+                />
             </div>
         </div>
     )

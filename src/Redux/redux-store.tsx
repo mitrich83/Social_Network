@@ -1,14 +1,14 @@
 import React from 'react';
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import profileReducer from './profile-reducer';
-import dialogsPageReducer from './dialogsPageReducer';
+import dialogsReducer from './dialogs-reducer';
 import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
 import thunkMiddleware from 'redux-thunk'
 
 const rootReducer = combineReducers({
     profilePage: profileReducer,
-    dialogsPage: dialogsPageReducer,
+    dialogsPage: dialogsReducer,
     usersPage: usersReducer,
     auth: authReducer,
     }

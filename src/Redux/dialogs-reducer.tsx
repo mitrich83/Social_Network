@@ -16,12 +16,10 @@ export type MessageItemType = {
 export type DialogsPageDataType = {
     dialogs: Array<DialogItemType>
     messages: Array<MessageItemType>
-    newMessageTextarea: string
 }
 
 export type ActionDialogsTypes =
-    ReturnType<typeof AddMessageActionCreator> |
-    ReturnType<typeof changeTextareaDialogsActionCreator>
+    ReturnType<typeof AddMessageActionCreator>
 
 const initialState: DialogsPageDataType = {
     dialogs: [
@@ -40,38 +38,28 @@ const initialState: DialogsPageDataType = {
         {id: v1(), message: 'yo'},
         {id: v1(), message: 'yo'},
     ],
-    newMessageTextarea: ''
 }
 
-const dialogsPageReducer = (state: DialogsPageDataType = initialState, action: ActionDialogsTypes): DialogsPageDataType => {
+const dialogsReducer = (state: DialogsPageDataType = initialState, action: ActionDialogsTypes): DialogsPageDataType => {
 
     switch (action.type) {
         case ADD_MESSAGE:
-            const text = state.newMessageTextarea.trim()
+            const text = action.newMessageTextarea.trim()
             if (text === '') return state
             const newMessage: MessageItemType = {
                 id: v1(),
-                message: state.newMessageTextarea.trim()
+                message: action.newMessageTextarea.trim()
             }
             return (
                 {
                     ...state,
-                    newMessageTextarea: '',
                     messages: [...state.messages, newMessage]
                 }
             );
-        case
-        CHANGE_TEXTAREA_DIALOGS:
-            return {
-                ...state,
-                newMessageTextarea: action.newTextarea
-            }
         default:
             return state
     }
 }
-export const AddMessageActionCreator = () => ({type: 'ADD-MESSAGE'} as const)
-export const changeTextareaDialogsActionCreator = (newTextarea: string) =>
-    ({type: 'CHANGE-TEXTAREA-DIALOGS', newTextarea: newTextarea} as const)
+export const AddMessageActionCreator = (newMessageTextarea:string) => ({type: 'ADD-MESSAGE', newMessageTextarea} as const)
 
-export default dialogsPageReducer
+export default dialogsReducer

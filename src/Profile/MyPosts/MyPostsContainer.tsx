@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     addPostActionCreator,
-    changeNewPostActionCreator, ProfileDataType
+    ProfileDataType
 } from '../../Redux/profile-reducer';
 import MyPosts from './MyPosts';
 import {connect} from 'react-redux';
@@ -13,8 +13,7 @@ type mapStateToPropsType = {
 }
 
 type mapDispatchToPropsType = {
-    addPost: () => void
-    onPostChange: (newText: string) => void
+    addPost: (newMessageTextarea:string) => void
 }
 
 const mapStateToProps = (state: mapStateToPropsType):mapStateToPropsType => {
@@ -25,13 +24,9 @@ const mapStateToProps = (state: mapStateToPropsType):mapStateToPropsType => {
 
 const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return {
-        addPost: () => {
-            dispatch(addPostActionCreator())
+        addPost: (newMessageTextarea:string) => {
+            dispatch(addPostActionCreator(newMessageTextarea))
         },
-        onPostChange: (newText: string) => {
-            const action = changeNewPostActionCreator(newText)
-            dispatch(action)
-        }
     }
 }
 
