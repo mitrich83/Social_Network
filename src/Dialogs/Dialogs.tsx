@@ -2,8 +2,8 @@ import React from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import MessageItem from './MessageItem/MessageItem';
-import {DialogForm} from './DialogForm';
 import {DialogsPageDataType} from '../Redux/dialogs-reducer';
+import {AddMessageForm} from '../components/common/addMessageForm/AddMessageForm';
 
 export type DialogsPagePropsType = {
     addMessage: (newMessageTextarea:string) => void
@@ -33,7 +33,7 @@ const Dialogs = (props: DialogsPagePropsType) => {
             </div>
             <div className={s.messages}>
                 {messagesElements}
-                <DialogForm addMessage={addMessage}
+                <AddMessageForm callback={addMessage}
 
                 />
             </div>

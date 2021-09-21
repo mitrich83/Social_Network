@@ -2,7 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileDataType} from '../../Redux/profile-reducer';
-import {DialogForm} from '../../Dialogs/DialogForm';
+import {AddMessageForm} from '../../components/common/addMessageForm/AddMessageForm';
 
 type MyPostsPropsType= {
     profilePage:ProfileDataType
@@ -20,7 +20,7 @@ const MyPosts = (props: MyPostsPropsType) => {
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
-            <DialogForm addMessage={onAddPost}/>
+            <AddMessageForm callback={onAddPost}/>
             <div className={s.post}>
                 {postsElements}
             </div>
