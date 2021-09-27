@@ -37,7 +37,7 @@ const authReducer = (state = InitialState, action: ActionCreatorTypes):AuthType 
         case SET_USERS_DATA: {
             return {
                 ...state,
-                ...action.data,
+                ...action.payload,
                 isAuth: true,
             }
         }
@@ -46,8 +46,8 @@ const authReducer = (state = InitialState, action: ActionCreatorTypes):AuthType 
     }
 }
 
-export const setAuthUserDataAC = (userId: string, login: string, email: string  ) => (
-    {type: SET_USERS_DATA, data: {userId, login, email }}
+export const setAuthUserDataAC = (userId: string, login: string, email: string  , isAuth: boolean) => (
+    {type: SET_USERS_DATA, payload: {userId, login, email, isAuth }}
 )
 
 export const getAuthUserData = () => (dispatch:Dispatch)=> {
@@ -55,9 +55,29 @@ export const getAuthUserData = () => (dispatch:Dispatch)=> {
         .then(response => {
             if(response.data.resultCode === 0){
                 let {id, login, email } = response.data.data;
-                dispatch(setAuthUserDataAC(id, login, email))
+                dispatch(setAuthUserDataAC(id, login, email, true))
             }
         });
 }
+
+/*export const login = (email:string, password:string, rememberMe:boolean) => (dispatch:Dispatch)=> {
+    return authAPI.login(email, password, rememberMe)
+        .then(response => {
+            if(response.data.resultCode === 0){
+              dispatch(getAuthUserData())
+            }
+        });
+}*/
+
+/*
+export const logout = () => (dispatch:Dispatch)=> {
+    return authAPI.logout()
+        .then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(getAuthUserData(null, null, null, false))
+            }
+        });
+}
+*/
 
 export default authReducer

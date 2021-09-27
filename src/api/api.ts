@@ -1,11 +1,10 @@
 import axios from 'axios';
-import {setAuthUserDataAC} from '../Redux/auth-reducer';
 
 const instance = axios.create({
     withCredentials: true,
     baseURL: `https://social-network.samuraijs.com/api/1.0/`,
     headers: {
-        "API-key": "eccbb3eb-58c4-4ed7-895f-7ce56bc6ba31"
+        'API-key': 'eccbb3eb-58c4-4ed7-895f-7ce56bc6ba31'
     }
 
 })
@@ -17,39 +16,43 @@ export const usersAPI = {
             .then(response => response.data)
     },
     follow(userId: number) {
-        return instance.post(`follow/${userId}`,{}, {withCredentials: true}).
-        then(response => {
+        return instance.post(`follow/${userId}`, {}, {withCredentials: true}).then(response => {
             return response
         })
     },
     unfollow(userId: number) {
-        return instance.delete(`follow/${userId}`, {withCredentials: true}).
-        then(response => {
+        return instance.delete(`follow/${userId}`, {withCredentials: true}).then(response => {
             return response
         })
     },
-    getProfile(userId: string){
+    getProfile(userId: string) {
         console.warn('Obsolete method. Please use profileApi method')
         return profileAPI.getProfile(userId)
     }
 }
 
 export const profileAPI = {
-    getProfile(userId: string){
-        return instance.get(`profile/`+ userId);
+    getProfile(userId: string) {
+        return instance.get(`profile/` + userId);
     },
-    getStatus(userId: string){
-        return instance.get(`profile/status/`+ userId);
+    getStatus(userId: string) {
+        return instance.get(`profile/status/` + userId);
     },
-    updateStatus(status: string){
-        return instance.put(`profile/status`,{status});
+    updateStatus(status: string) {
+        return instance.put(`profile/status`, {status});
     },
 }
 
 export const authAPI = {
-    me () {
-        return instance.get(`/auth/me`, {withCredentials: true})
-               }
+    me() {
+        return instance.get(`auth/me`, {withCredentials: true})
+    },
+    login(email:string, password:string, rememberMe: boolean = false) {
+        return instance.post(`auth/login`, {email, password, rememberMe}, {withCredentials: true})
+    },
+    logout() {
+        return instance.delete(`auth/login`,  {withCredentials: true})
+    }
 }
 
 
