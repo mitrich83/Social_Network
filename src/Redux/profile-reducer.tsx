@@ -10,19 +10,18 @@ const ADD_POST = 'ADD-POST'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_STATUS = 'SET-STATUS'
 
+//types
 export type PostType = {
     message: string
     image?: string
     id: string
     likesCount: number
 }
-
 export type ProfileDataType = {
     posts: Array<PostType>
     profile: ProfileType
     status: string
 }
-
 export type ProfileType = {
     userId: number
     aboutMe: string,
@@ -63,7 +62,7 @@ const initialState: ProfileDataType = {
     } as ProfileType,
     status: '',
 }
-
+// reducer
 const profileReducer = (state: ProfileDataType = initialState, action: ActionProfileTypes): ProfileDataType => {
     switch (action.type) {
         case ADD_POST:
@@ -94,17 +93,20 @@ const profileReducer = (state: ProfileDataType = initialState, action: ActionPro
             return state
     }
 }
-
+// actions
 export const addPostActionCreator = (newMessageTextarea:string) => ({type: ADD_POST, newMessageTextarea} as const)
 export const setStatus = (status: string)=> ({type: SET_STATUS, status} as const)
 export const setUserProfile = (profile: ProfileType)=> ({type:SET_USER_PROFILE, profile} as const)
-export const getUserProfile = (userId:string) => (dispatch:Dispatch)=> {
+
+
+// thunks
+export const getUserProfile = (userId:string) => (dispatch:Dispatch<ActionProfileTypes>)=> {
     usersAPI.getProfile(userId)
         .then(response => {
             dispatch(setUserProfile(response.data));
         });
 }
-export const getUserStatus = (userId:string) => (dispatch:Dispatch)=> {
+export const getUserStatus = (userId:string) => (dispatch:Dispatch<ActionProfileTypes>)=> {
     profileAPI.getStatus(userId)
         .then(response => {
             dispatch(setStatus(response.data));
