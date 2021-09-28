@@ -70,8 +70,10 @@ export const getAuthUserData = () => (dispatch: Dispatch<ActionCreatorTypes>) =>
 export const login = (email: string, password: string, rememberMe: boolean): ThunkType => (dispatch) =>
     authAPI.login(email, password, rememberMe)
         .then((res) => {
+           const message = res.data.message
             if (res.data.resultCode === 0) {
                 dispatch(getAuthUserData())
+
             }
         });
 
@@ -79,6 +81,7 @@ export const logout = (): ThunkType => (dispatch) =>
     authAPI.logout()
         .then((res) => {
             if (res.data.resultCode === 0) {
+                debugger
                 dispatch(setAuthUserDataAC('', '', '', false))
             }
         });

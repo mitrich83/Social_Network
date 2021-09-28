@@ -45,11 +45,10 @@ export const profileAPI = {
 
 export const authAPI = {
     me() {
-
         return instance.get(`auth/me`, {withCredentials: true})
     },
     login(email:string, password:string, rememberMe: boolean) {
-        debugger
+
         return instance.post(`auth/login`, {email, password, rememberMe}, {withCredentials: true})
     },
     logout() {

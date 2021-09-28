@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import {connect} from 'react-redux';
-import {getAuthUserData, logout, ThunkType} from '../../Redux/auth-reducer';
+import {getAuthUserData, logout} from '../../Redux/auth-reducer';
 import {AppStateType} from '../../Redux/redux-store';
 
 type PropsType = MapDispatchToPropsType & MapStateToPropsType
@@ -22,7 +22,7 @@ type MapStateToPropsType = {
 
 type MapDispatchToPropsType = {
     getAuthUserData: () => void
-    logout: ThunkType
+    logout: () => void
 }
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({

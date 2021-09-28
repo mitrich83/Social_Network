@@ -3,7 +3,6 @@ import {LoginForm} from './LoginForm';
 import {useSelector} from 'react-redux';
 import {Redirect} from 'react-router';
 import {AppStateType} from '../../Redux/redux-store';
-import {AuthType} from '../../Redux/auth-reducer';
 
 
 export const Login = ()=> {

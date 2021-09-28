@@ -30,10 +30,6 @@ export const LoginForm = () => {
                 onSubmit={(values, {setSubmitting}) => {
                     setSubmitting(false);
                     dispatch(login(values.login, values.password, values.rememberMe))
-
-                    /*      onSubmit={(values, {setSubmitting}) => {
-                              alert(JSON.stringify(values, null, 2));
-                              setSubmitting(false);*/
                 }}
             >
                 {({
