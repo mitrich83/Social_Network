@@ -1,16 +1,26 @@
-import React from 'react';
-import {Field, Formik} from 'formik';
+import React, {useEffect, useState} from 'react';
+import {Field, Formik, FormikErrors, FormikValues} from 'formik';
 import s from './login.module.css'
 import {useDispatch, useSelector} from 'react-redux';
-import {AuthType, login} from '../../Redux/auth-reducer';
+import {login} from '../../Redux/auth-reducer';
 import store, {AppStateType} from '../../Redux/redux-store';
 
 
 export const LoginForm = () => {
     const dispatch = useDispatch()
-// const errorMessageFromServer = useSelector(()=> store.getState().auth.authError)
+    debugger
+    const messageError = useSelector<AppStateType>(() => store.getState().auth.messageError);
+    // const [someError, setSomeError] = useState(messageError)
+    //
+    // useEffect(() => {
+    //     if(messageError) {
+    //         // @ts-ignore
+    //         setSomeError(messageError)
+    //     }
+    // }, [messageError])
+
     function validateInputs(value: string) {
-        let error;
+        let error = {};
         if (value === '') {
             error = 'Field is required';
         }
@@ -22,30 +32,37 @@ export const LoginForm = () => {
             return error;
         }
 
+
     }
 
-        return (
-            <Formik
-                initialValues={{login: '', password: '', rememberMe: false}}
-                onSubmit={(values, {setSubmitting}) => {
-                    setSubmitting(false);
-                    dispatch(login(values.login, values.password, values.rememberMe))
-                }}
-            >
-                {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      isSubmitting,
-                      /* and other goodies */
-                  }) => (
-                    <form onSubmit={handleSubmit}>
+    return (
+        <Formik
+            initialValues={{login: '', password: '', rememberMe: false, messageError}}
+            onSubmit={(values, {setSubmitting}) => {
+                setSubmitting(false);
+                dispatch(login(values.login, values.password, values.rememberMe))
+            }}
+            validate={(value) => {
+                let errors: FormikErrors<FormikValues> = {}
+                return errors
+            }}
+            // initialErrors={error}
+        >
+            {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+
+                  isSubmitting,
+                  /* and other goodies */
+              }) => (
+                <form onSubmit={handleSubmit}>
+                    <div>
                         <div>
-                            <div
-                            ><Field
+                            <Field
                                 name="login"
                                 component="input"
                                 placeholder="Enter login"
@@ -56,40 +73,43 @@ export const LoginForm = () => {
                                 validate={validateInputs}
                                 style={errors.login && touched.login && {border: '2px solid red'}}
                             />
-                                <span className={s.error}>{errors.login && touched.login && errors.login}</span>
-                            </div>
-                            <div>
-                                <Field
-                                    name="password"
-                                    component="input"
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.password}
-                                    validate={validateInputs}
-                                    style={errors.password && touched.password && {border: '2px solid red'}}
-                                />
-                                <span className={s.error}>
+                            <span className={s.error}>{errors.login && touched.login && errors.login}</span>
+                        </div>
+                        <div>
+                            <Field
+                                name="password"
+                                component="input"
+                                type="password"
+                                placeholder="Password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.password}
+                                validate={validateInputs}
+                                style={errors.password && touched.password && {border: '2px solid red'}}
+                            />
+                            <span className={s.error}>
                             {errors.password && touched.password && errors.password}
                         </span>
-                            </div>
                         </div>
-                        <div>
-                            <Field type="checkbox" name="rememberMe"/>
-                            Remember me
-                        </div>
-                        <div>
-                            <button type="submit" disabled={errors.login || errors.password ? true : false}>
-                                Submit
-                            </button>
-                        </div>
-                    </form>
-                )}
-            </Formik>
-        )
-    }
-
+                    </div>
+                    <div>
+                        <Field type="checkbox" name="rememberMe"/>
+                        Remember me
+                    </div>
+                    <div>
+                        {errors.messageError}
+                        {console.log(errors.messageError)}
+                    </div>
+                    <div>
+                        <button type="submit" disabled={errors.login || errors.password ? true : false}>
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            )}
+        </Formik>
+    )
+}
 
 
 /*
