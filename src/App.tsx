@@ -12,7 +12,7 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import {Login} from './components/login/Login';
 import {connect} from 'react-redux';
 import {AppStateType} from './Redux/redux-store';
-import {RouteComponentProps, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 import {compose} from 'redux';
 import {initialiseAppTC} from './Redux/app-reducer';
 import {Preloader} from './components/common/preloader/Preloader';
@@ -67,4 +67,5 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
 
 export default compose<React.ComponentType>(
     withRouter,
-    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {initialiseAppTC})(App));
+    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(mapStateToProps, {initialiseAppTC}))(App);
+
