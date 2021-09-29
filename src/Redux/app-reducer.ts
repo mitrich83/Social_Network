@@ -1,6 +1,3 @@
-import React from 'react';
-import {authAPI} from '../api/api';
-import {Dispatch} from 'redux';
 import {AppStateType} from './redux-store';
 import {ThunkAction} from 'redux-thunk';
 import {AuthACTypes, getAuthUserData} from './auth-reducer';

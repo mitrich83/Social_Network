@@ -83,9 +83,11 @@ export const getAuthUserData = () => (dispatch: Dispatch<AuthACTypes>) => {
 
 export const login = (email: string, password: string, rememberMe: boolean): ThunkType => (dispatch) =>
     authAPI.login(email, password, rememberMe)
-        .then((res) => {debugger
+        .then((res) => {
+            debugger
             const messageError = res.data.messages[0]
             if (res.data.resultCode === 0) {
+                debugger
                 dispatch(getAuthUserData())
                 dispatch(setMessagesLogin(''))
             } else if (res.data.resultCode === 1) {

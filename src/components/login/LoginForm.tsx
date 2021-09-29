@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Field, Formik, FormikErrors, FormikValues} from 'formik';
+import {Field, Formik, FormikErrors, FormikValues, ErrorMessage } from 'formik';
 import s from './login.module.css'
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../Redux/auth-reducer';
@@ -10,7 +10,7 @@ export const LoginForm = () => {
     const dispatch = useDispatch()
     debugger
     const messageError = useSelector<AppStateType>(() => store.getState().auth.messageError);
-    // const [someError, setSomeError] = useState(messageError)
+    const [someError, setSomeError] = useState(messageError)
     //
     // useEffect(() => {
     //     if(messageError) {
@@ -96,6 +96,7 @@ export const LoginForm = () => {
                         <Field type="checkbox" name="rememberMe"/>
                         Remember me
                     </div>
+
                     <div>
                         {errors.messageError}
                         {console.log(errors.messageError)}
