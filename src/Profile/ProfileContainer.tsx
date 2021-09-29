@@ -35,6 +35,7 @@ class ProfileContainer extends React.Component<CommonPropsType> {
             userId = this.props.authorizedUserId;
             if(!userId){
                 // this.props.history.push('/login')
+                //  <Route path={'/login'} render={() => <Login/>}/>
             }
         }
         this.props.getUserProfile(userId)
