@@ -9,6 +9,7 @@ import {AppStateType} from './redux-store';
 const ADD_POST = 'ADD-POST'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_STATUS = 'SET-STATUS'
+const DELETE_POST = 'DELETE_POST'
 
 //types
 export type PostType = {
@@ -47,7 +48,8 @@ export type ProfileType = {
 export type ActionProfileTypes =
     ReturnType<typeof addPostActionCreator> |
     ReturnType<typeof setUserProfile> |
-    ReturnType<typeof setStatus>
+    ReturnType<typeof setStatus> |
+    ReturnType<typeof deletePost>
 
 const initialState: ProfileDataType = {
     posts: [
@@ -89,6 +91,11 @@ const profileReducer = (state: ProfileDataType = initialState, action: ActionPro
                 ...state, status: action.status
             }
         }
+        case 'DELETE_POST': {
+            return {
+                ...state, posts: state.posts.filter(p => p.message !== action.message)
+            }
+        }
         default:
             return state
     }
@@ -97,6 +104,7 @@ const profileReducer = (state: ProfileDataType = initialState, action: ActionPro
 export const addPostActionCreator = (newMessageTextarea:string) => ({type: ADD_POST, newMessageTextarea} as const)
 export const setStatus = (status: string)=> ({type: SET_STATUS, status} as const)
 export const setUserProfile = (profile: ProfileType)=> ({type:SET_USER_PROFILE, profile} as const)
+export const deletePost = (message: string)=> ({type:DELETE_POST, message} as const)
 
 
 // thunks
