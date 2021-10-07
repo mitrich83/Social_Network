@@ -8,24 +8,31 @@ type MyPostsPropsType= {
     profilePage:ProfileDataType
     addPost:(newMessageTextarea:string)=> void
 }
+// React.PureComponent - did shouldComponentUpdated inside
+class MyPosts extends React.PureComponent<MyPostsPropsType> {
 
-const MyPosts = (props: MyPostsPropsType) => {
+    // React.Component
+/*    shouldComponentUpdate(nextProps: Readonly<MyPostsPropsType>, nextState: Readonly<{}>): boolean {
+        return nextProps !== this.props || nextState !== this.state
+    }*/
 
-    let postsElements = props.profilePage.posts.map(p => <Post key={p.id} post={p}/>)
+    render() {
+        let postsElements = this.props.profilePage.posts.map(p => <Post key={p.id} post={p}/>)
 
-    const onAddPost = (newMessageTextarea:string) => {
-        props.addPost(newMessageTextarea)
-    }
+        const onAddPost = (newMessageTextarea: string) => {
+            this.props.addPost(newMessageTextarea)
+        }
 
-    return (
-        <div className={s.postsBlock}>
-            <h3>My posts</h3>
-            <AddMessageForm callback={onAddPost}/>
-            <div className={s.post}>
-                {postsElements}
+        return (
+            <div className={s.postsBlock}>
+                <h3>My posts</h3>
+                <AddMessageForm callback={onAddPost}/>
+                <div className={s.post}>
+                    {postsElements}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default MyPosts;
