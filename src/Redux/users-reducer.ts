@@ -1,13 +1,14 @@
 import {usersAPI} from '../api/api';
 import {Dispatch} from 'redux';
+import {AxiosResponse} from 'axios';
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const SET_USERS = 'SET_USERS'
-const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
-const SET_TOTAL_CURRENT_USERS_COUNT = 'SET-TOTAL-CURRENT-USERS-COUNT'
-const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING'
-const TOGGLE_IS_FOLLOWING_PROGRESS = 'TOGGLE-IS-FOLLOWING-PROGRESS'
+const FOLLOW = 'USERS/FOLLOW'
+const UNFOLLOW = 'USERS/UNFOLLOW'
+const SET_USERS = 'USERS/SET_USERS'
+const SET_CURRENT_PAGE = 'USERS/SET-CURRENT-PAGE'
+const SET_TOTAL_CURRENT_USERS_COUNT = 'USERS/SET-TOTAL-CURRENT-USERS-COUNT'
+const TOGGLE_IS_FETCHING = 'USERS/TOGGLE-IS-FETCHING'
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'USERS/TOGGLE-IS-FOLLOWING-PROGRESS'
 
 export type UserType = {
     name: string,
@@ -51,25 +52,16 @@ const initialState: UsersDataType = {
 const usersReducer = (state: UsersDataType = initialState, action: ActionCreatorTypes): UsersDataType => {
     switch (action.type) {
         case FOLLOW:
+            debugger
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return {...u, followed: true}
-                    }
-                    return u
-                })
+                users: state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)
             }
         case UNFOLLOW:
+            debugger
             return {
                 ...state,
-                users: state.users.map(u => {
-                        if (u.id === action.userId) {
-                            return {...u, followed: false}
-                        }
-                        return u
-                    }
-                )
+                users: state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)
             }
         case SET_USERS:
             return {...state, users: action.users}
@@ -112,42 +104,47 @@ export const toggleIsFollowingProgress = (isFetching: boolean, userId: number) =
 } as const)
 
 
-export const requestUsers = (currentPage:number, pageSize:number) => {
-    return (dispatch: Dispatch<ActionCreatorTypes>) => {
+export const requestUsers = (currentPage: number, pageSize: number) => {
+    return async (dispatch: Dispatch<ActionCreatorTypes>) => {
         dispatch(toggleIsFetching(true))
         dispatch(setCurrentPage(currentPage))
-        usersAPI.getUsers(currentPage, pageSize)
-            .then(data => {
-                dispatch(toggleIsFetching(false))
-                dispatch(setUsers(data.items));
-                dispatch(setTotalUsersCount(data.totalCount));
-            });
+        const data = await usersAPI.getUsers(currentPage, pageSize)
+        dispatch(toggleIsFetching(false))
+        dispatch(setUsers(data.items));
+        dispatch(setTotalUsersCount(data.totalCount));
     }
 }
 
-export const follow = (userId:number) => {
-    return (dispatch: Dispatch<ActionCreatorTypes>) => {
-        dispatch(toggleIsFollowingProgress(true,userId))
-        usersAPI.follow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(toggleIsFollowingProgress(false, userId))
-            })
+const followUnfollow = async (dispatch: Dispatch<ActionCreatorTypes>,
+                              userId: number,
+                              apiMethod: (userId: number) => Promise<AxiosResponse>,
+                              actionCreator: (userId: number) => ActionCreatorTypes) => {
+    debugger
+    dispatch(toggleIsFollowingProgress(true, userId))
+    const res = await apiMethod(userId)
+    if (res.data.resultCode === 0) {
+        debugger
+        dispatch(actionCreator(userId))
+    }
+    dispatch(toggleIsFollowingProgress(false, userId))
+}
+
+export const follow = (userId: number) => {
+    debugger
+    return async (dispatch: Dispatch<ActionCreatorTypes>) => {
+        debugger
+        let apiMethod = await usersAPI.follow.bind(usersAPI)
+        followUnfollow(dispatch, userId, apiMethod, followSuccess)
+
     }
 }
 
-export const unfollow = (userId:number) => {
-    return (dispatch: Dispatch<ActionCreatorTypes>) => {
-        dispatch(toggleIsFollowingProgress(true,userId))
-        usersAPI.unfollow(userId)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(toggleIsFollowingProgress(false, userId))
-            })
+export const unfollow = (userId: number) => {
+    debugger
+    return async (dispatch: Dispatch<ActionCreatorTypes>) => {
+        debugger
+        let apiMethod = await usersAPI.unfollow.bind(usersAPI)
+        followUnfollow(dispatch, userId, apiMethod, unfollowSuccess)
     }
 }
 

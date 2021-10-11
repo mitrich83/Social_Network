@@ -1,147 +1,78 @@
-import React, {useEffect, useState} from 'react';
-import {Field, Formik, FormikErrors, FormikValues, ErrorMessage } from 'formik';
-import s from './login.module.css'
+import React from 'react';
+import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../Redux/auth-reducer';
 import store, {AppStateType} from '../../Redux/redux-store';
+import {login} from '../../Redux/auth-reducer';
 
+type FormikErrorType = {
+    email?: string
+    password?: string
+    rememberMe?: boolean
+}
 
 export const LoginForm = () => {
     const dispatch = useDispatch()
-    debugger
-    const messageError = useSelector<AppStateType>(() => store.getState().auth.messageError);
-    const [someError, setSomeError] = useState(messageError)
-    //
-    // useEffect(() => {
-    //     if(messageError) {
-    //         // @ts-ignore
-    //         setSomeError(messageError)
-    //     }
-    // }, [messageError])
-
-    function validateInputs(value: string) {
-        let error = {};
-        if (value === '') {
-            error = 'Field is required';
-        }
-        if (value.length > 30) {
-            error = 'Max length is 30 symbols '
-        }
-        if (value.length < 8) {
-            error = 'Min length is 8 symbols '
-            return error;
-        }
-
-
-    }
+    const messageError = useSelector<AppStateType, string>((state) =>state.auth.messageError);
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            rememberMe: false
+        },
+        validate: (values) => {
+            const errors: FormikErrorType = {};
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+            if (!values.password) {
+                errors.password = 'Required';
+            } else if (values.password.length < 8) {
+                errors.password = 'Must be 8 characters or more';
+            }
+            return errors;
+        },
+        onSubmit: values => {
+            debugger
+            dispatch(login(values.email, values.password, values.rememberMe))
+            formik.resetForm();
+        },
+    })
 
     return (
-        <Formik
-            initialValues={{login: '', password: '', rememberMe: false, messageError}}
-            onSubmit={(values, {setSubmitting}) => {
-                setSubmitting(false);
-                dispatch(login(values.login, values.password, values.rememberMe))
-            }}
-            validate={(value) => {
-                let errors: FormikErrors<FormikValues> = {}
-                return errors
-            }}
-            // initialErrors={error}
-        >
-            {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-
-                  isSubmitting,
-                  /* and other goodies */
-              }) => (
-                <form onSubmit={handleSubmit}>
-                    <div>
+        <form onSubmit={formik.handleSubmit}>
                         <div>
-                            <Field
-                                name="login"
-                                component="input"
-                                placeholder="Enter login"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.login}
-                                nameInput={'Login'}
-                                validate={validateInputs}
-                                style={errors.login && touched.login && {border: '2px solid red'}}
+                            <input
+                                type="email"
+                                placeholder="Enter email"
+                                {...formik.getFieldProps('email')}
                             />
-                            <span className={s.error}>{errors.login && touched.login && errors.login}</span>
+                            {formik.touched.email && formik.errors.email &&
+                            <div style={{color: 'red'}}>{messageError}{formik.errors.email}</div>}
                         </div>
                         <div>
-                            <Field
-                                name="password"
-                                component="input"
+                            <input
                                 type="password"
                                 placeholder="Password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.password}
-                                validate={validateInputs}
-                                style={errors.password && touched.password && {border: '2px solid red'}}
-                            />
-                            <span className={s.error}>
-                            {errors.password && touched.password && errors.password}
-                        </span>
+                                {...formik.getFieldProps('password')}
+                          />
+                            {formik.touched.password && formik.errors.password &&
+                            <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                            {messageError&&<div style={{color: 'red'}}>{messageError}</div>}
+                        </div>
+
+                    <div>
+                        <input
+                            type="checkbox"
+                            checked={formik.values.rememberMe}
+                            {...formik.getFieldProps('rememberMe')}
+                        />
+                        Remember me
+                        <div>
+                            <button type="submit">Login</button>
                         </div>
                     </div>
-                    <div>
-                        <Field type="checkbox" name="rememberMe"/>
-                        Remember me
-                    </div>
-
-                    <div>
-                        {errors.messageError}
-                        {console.log(errors.messageError)}
-                    </div>
-                    <div>
-                        <button type="submit" disabled={errors.login || errors.password ? true : false}>
-                            Submit
-                        </button>
-                    </div>
                 </form>
-            )}
-        </Formik>
     )
 }
-
-
-/*
-import {Field, Form } from 'react-final-form';
-
-
-export const LoginForm = () => {
-    const onSubmit = () => {
-
-    };
-    return <div>
-        <Form onSubmit={onSubmit} >
-            {props => (
-                <form onSubmit={props.handleSubmit}>
-
-                    <div>
-                        <Field name="Login" component="input" placeholder="Login"/>
-                    </div>
-                    <div>
-                        <Field name="Password" component="input" placeholder="Password"/>
-                    </div>
-                    <div>
-                        <Field name="checkbox" component="input" type={'checkbox'}/>
-                        Remember me
-                    </div>
-                    <div>
-                        <button type={"submit"}>Login</button>
-                    </div>
-                </form>
-            )}
-        </Form>
-    </div>
-}
-*/

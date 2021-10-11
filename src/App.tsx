@@ -18,12 +18,15 @@ import {initialiseAppTC} from './Redux/app-reducer';
 import {Preloader} from './components/common/preloader/Preloader';
 
 
+
 type AppPropsType = MapDispatchToPropsType & MapStateToPropsType
 
 class App extends React.Component<AppPropsType, AppStateType> {
-    componentDidMount() {
+        componentDidMount() {
         this.props.initialiseAppTC()
     }
+
+
     render() {
         if(!this.props.initialized) return <Preloader/>
 

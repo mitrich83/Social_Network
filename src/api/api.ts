@@ -12,15 +12,16 @@ export const usersAPI = {
     getUsers(currentPage: number, pageSize: number) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`,
             {withCredentials: true})
-            // возращаем не то что вернул get а то что вернул then ( возращает другой промис )
-            .then(response => response.data)
+          .then(response => response.data)
     },
     follow(userId: number) {
+        debugger
         return instance.post(`follow/${userId}`, {}, {withCredentials: true}).then(response => {
             return response
         })
     },
     unfollow(userId: number) {
+        debugger
         return instance.delete(`follow/${userId}`, {withCredentials: true}).then(response => {
             return response
         })
@@ -47,13 +48,21 @@ export const authAPI = {
     me() {
         return instance.get(`auth/me`, {withCredentials: true})
     },
-    login(email:string, password:string, rememberMe: boolean) {
-
-        return instance.post(`auth/login`, {email, password, rememberMe}, {withCredentials: true})
+    login(email: string|null, password: string|null, rememberMe: boolean=false) {
+        debugger
+        return instance.post('auth/login', {email, password, rememberMe}).then(res => res.data)
     },
     logout() {
-        return instance.delete(`auth/login`,  {withCredentials: true})
-    }
+        debugger
+        return instance.delete('auth/login').then(res => res.data)
+    },
+}
+
+export type ResponseType<D = {}> = {
+    resultCode: number
+    messages: Array<string>
+    fieldsErrors: Array<string>
+    data: D
 }
 
 

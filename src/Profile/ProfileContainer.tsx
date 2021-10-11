@@ -2,15 +2,16 @@ import React from 'react';
 import Profile from './Profile';
 import {getUserStatus, getUserProfile, ProfileType, updateUserStatus} from '../Redux/profile-reducer';
 import {AppStateType} from '../Redux/redux-store';
-import {RouteComponentProps, withRouter} from 'react-router';
+import {Redirect, RouteComponentProps, withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../hoc/withAuthRedirect';
+import {Preloader} from '../components/common/preloader/Preloader';
 
 type MapStatePropsType = {
     profile: ProfileType
     status: string
-    authorizedUserId: any
+    authorizedUserId: null | string
     isAuth: boolean
 }
 
@@ -31,11 +32,10 @@ type CommonPropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 class ProfileContainer extends React.Component<CommonPropsType> {
     componentDidMount() {
         let userId = this.props.match.params.userId
-        if (!userId) {
+        if (!userId &&  this.props.authorizedUserId!== null) {
             userId = this.props.authorizedUserId;
             if(!userId){
-                // this.props.history.push('/login')
-                //  <Route path={'/login'} render={() => <Login/>}/>
+                this.props.history.push('/login')
             }
         }
         this.props.getUserProfile(userId)
@@ -43,6 +43,8 @@ class ProfileContainer extends React.Component<CommonPropsType> {
     }
 
     render() {
+        if(!this.props.authorizedUserId) return <Redirect to={'/login'}/>
+
         return (
             <Profile {...this.props}
                      profile={this.props.profile}

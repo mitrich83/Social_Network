@@ -1,12 +1,11 @@
-import React from 'react';
 import {authAPI} from '../api/api';
 import {Dispatch} from 'redux';
 import {AppStateType} from './redux-store';
 import {ThunkAction} from 'redux-thunk';
 
 
-const SET_USERS_DATA = 'SET-USERS-DATA'
-const SET_ERROR_DATA = 'SET-ERROR-DATA'
+const SET_USERS_DATA = 'AUTH/SET-USERS-DATA'
+const SET_ERROR_DATA = 'AUTH/SET-ERROR-DATA'
 
 export type InitialStateType = {
     userId: null | string,
@@ -25,6 +24,13 @@ export type DataType = {
     },
 }
 
+export type LoginParamsType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha?: string,
+}
+
 export type AuthACTypes =
     ReturnType<typeof setAuthUserDataAC>
     | ReturnType<typeof setMessagesLogin>
@@ -41,13 +47,13 @@ export const InitialState: InitialStateType = {
 const authReducer = (state = InitialState, action: AuthACTypes): InitialStateType => {
     switch (action.type) {
         case SET_USERS_DATA: {
+
             return {
                 ...state,
                 ...action.payload,
             }
         }
         case SET_ERROR_DATA: {
-            debugger
             return {
                 ...state,
                 messageError: action.messageError,
@@ -63,44 +69,39 @@ export const setAuthUserDataAC = (userId: string, login: string, email: string, 
 )
 
 export const setMessagesLogin = (messageError: string) => (
-    {type: SET_ERROR_DATA,  messageError} as const
+    {type: SET_ERROR_DATA, messageError} as const
 )
 
 
 // thunks
-
 export type ThunkType = ThunkAction<void, AppStateType, unknown, AuthACTypes>
 
-export const getAuthUserData = () => (dispatch: Dispatch<AuthACTypes>) => {
-    return authAPI.me()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                let {id, login, email} = res.data;
-                dispatch(setAuthUserDataAC(id, login, email, true))
-            }
-        });
+
+export const getAuthUserData = () => async (dispatch: Dispatch<AuthACTypes>) => {
+    let res = await authAPI.me()
+    if (res.data.resultCode === 0) {
+        let {id, login, email} = res.data.data;
+        dispatch(setAuthUserDataAC(id, login, email, true))
+    }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean): ThunkType => (dispatch) =>
-    authAPI.login(email, password, rememberMe)
-        .then((res) => {
-            debugger
-            const messageError = res.data.messages[0]
-            if (res.data.resultCode === 0) {
-                debugger
-                dispatch(getAuthUserData())
-                dispatch(setMessagesLogin(''))
-            } else if (res.data.resultCode === 1) {
-                dispatch(setMessagesLogin(messageError))
-            }
-        });
+export const login = (email: string | null, password: string | null, rememberMe: boolean):ThunkType =>
+    async (dispatch) => {
+    let res = await authAPI.login(email, password, rememberMe)
+    if (res.resultCode === 0) {
+        dispatch(getAuthUserData())
+        dispatch(setMessagesLogin(''))
+    } else if (res.resultCode === 1) {
+        dispatch(setMessagesLogin(res.messages[0]))
+    }
 
-export const logout = (): ThunkType => (dispatch) =>
-    authAPI.logout()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                dispatch(setAuthUserDataAC('', '', '', false))
-            }
-        });
+}
+export const logout = (): ThunkType => async (dispatch) => {
+    let res = await authAPI.logout()
+    if (res.resultCode === 0) {
+        dispatch(setAuthUserDataAC('', '', '', false))
+        dispatch(setMessagesLogin(''))
+    }
+}
 
 export default authReducer

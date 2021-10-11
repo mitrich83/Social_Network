@@ -1,4 +1,3 @@
-import React from 'react';
 import {v1} from 'uuid';
 import {profileAPI, usersAPI} from '../api/api';
 import {Dispatch} from 'redux';
@@ -6,10 +5,10 @@ import {ThunkDispatch} from 'redux-thunk';
 import {AppStateType} from './redux-store';
 
 
-const ADD_POST = 'ADD-POST'
-const SET_USER_PROFILE = 'SET-USER-PROFILE'
-const SET_STATUS = 'SET-STATUS'
-const DELETE_POST = 'DELETE_POST'
+const ADD_POST = 'PROFILE/ADD-POST'
+const SET_USER_PROFILE = 'PROFILE/SET-USER-PROFILE'
+const SET_STATUS = 'PROFILE/SET-STATUS'
+const DELETE_POST = 'PROFILE/DELETE_POST'
 
 //types
 export type PostType = {
@@ -28,7 +27,7 @@ export type ProfileType = {
     aboutMe: string,
     contacts: {
         facebook: string,
-        website:null,
+        website: null,
         vk: string,
         twitter: string,
         instagram: string,
@@ -91,7 +90,7 @@ const profileReducer = (state: ProfileDataType = initialState, action: ActionPro
                 ...state, status: action.status
             }
         }
-        case 'DELETE_POST': {
+        case DELETE_POST: {
             return {
                 ...state, posts: state.posts.filter(p => p.message !== action.message)
             }
@@ -101,38 +100,34 @@ const profileReducer = (state: ProfileDataType = initialState, action: ActionPro
     }
 }
 // actions
-export const addPostActionCreator = (newMessageTextarea:string) => ({type: ADD_POST, newMessageTextarea} as const)
-export const setStatus = (status: string)=> ({type: SET_STATUS, status} as const)
-export const setUserProfile = (profile: ProfileType)=> ({type:SET_USER_PROFILE, profile} as const)
-export const deletePost = (message: string)=> ({type:DELETE_POST, message} as const)
+export const addPostActionCreator = (newMessageTextarea: string) => ({type: ADD_POST, newMessageTextarea} as const)
+export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
+export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const)
+export const deletePost = (message: string) => ({type: DELETE_POST, message} as const)
 
 
 // thunks
-export const getUserProfile = (userId:string) => (dispatch:Dispatch<ActionProfileTypes>)=> {
-    usersAPI.getProfile(userId)
-        .then(response => {
-            dispatch(setUserProfile(response.data));
-        });
-}
-export const getUserStatus = (userId:string) => (dispatch:Dispatch<ActionProfileTypes>)=> {
-    profileAPI.getStatus(userId)
-        .then(response => {
-            dispatch(setStatus(response.data));
-        });
-}
-export const updateUserStatus = (status:string)=> (
-    dispatch: ThunkDispatch<AppStateType, unknown, ActionProfileTypes>,
-    getState: () => AppStateType
-    ) => {
-    const userId = getState().auth.userId
-    profileAPI.updateStatus(status)
-        .then(response => {
-            if(response.data.resultCode === 0) {
-                if(userId) {
-                    dispatch(getUserStatus(userId))
-                }
+export const getUserProfile = (userId: string) =>
+    async (dispatch: Dispatch<ActionProfileTypes>) => {
+        const res = await usersAPI.getProfile(userId)
+        dispatch(setUserProfile(res.data));
+    }
+export const getUserStatus = (userId: string) =>
+    async (dispatch: Dispatch<ActionProfileTypes>) => {
+        const res = await profileAPI.getStatus(userId)
+        dispatch(setStatus(res.data));
+
+    }
+export const updateUserStatus = (status: string) =>
+    async (dispatch: ThunkDispatch<AppStateType, unknown, ActionProfileTypes>,
+           getState: () => AppStateType) => {
+        const userId = getState().auth.userId
+        const res = await profileAPI.updateStatus(status)
+        if (res.data.resultCode === 0) {
+            if (userId) {
+                dispatch(getUserStatus(userId))
             }
-        });
-}
+        }
+    }
 
 export default profileReducer
