@@ -9,7 +9,6 @@ export const Login = ()=> {
     const isAuth = useSelector<AppStateType>(state=>state.auth.isAuth)
     console.log('Login', isAuth)
     if(isAuth) {
-        debugger
         return <Redirect to={'/profile'} />
     }
 

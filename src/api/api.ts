@@ -15,11 +15,11 @@ export const usersAPI = {
     },
     follow(userId: number) {
         debugger
-        return instance.post(`follow/${userId}`, {}).then(res => res.data)
+        return instance.post<ResponseType>(`follow/${userId}`, {}).then(res => res.data)
     },
     unfollow(userId: number) {
-        debugger
-        return instance.delete(`follow/${userId}`).then(res => res.data)
+
+        return instance.delete<ResponseType>(`follow/${userId}`).then(res => res.data)
     },
     getProfile(userId: string) {
         console.warn('Obsolete method. Please use profileApi method')
@@ -58,4 +58,9 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-
+export type UnfollowFollowResponseType = {
+    data: Object
+    fieldsErrors: []
+    messages: []
+    resultCode: number
+}

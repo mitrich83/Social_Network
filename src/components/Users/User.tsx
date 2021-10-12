@@ -11,7 +11,7 @@ type UsersPropsType = {
     followingInProgress: Array<number>,
 }
 
-export const User = React.memo((
+export const User = (
     {
         user,
         unfollow,
@@ -58,6 +58,6 @@ export const User = React.memo((
                                  </span>
                                  </span>
                 </div>)
-})
+}
 
 

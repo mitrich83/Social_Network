@@ -9,7 +9,6 @@ type PropsType = {
 }
 
 const Header: React.FC<PropsType> = ({ isAuth, login, logout}) => {
-    debugger
     return <header className={s.header}>
         <img
             src="https://img.icons8.com/color/452/avatar.png"

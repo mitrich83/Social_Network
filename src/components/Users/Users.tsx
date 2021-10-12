@@ -14,7 +14,7 @@ type UsersPropsType = {
     followingInProgress: Array<number>,
 }
 
-export const Users = React.memo((
+export const Users = (
     {
         totalUsersCount,
         pageSize,
@@ -48,6 +48,6 @@ export const Users = React.memo((
             </div>
         </div>
     )
-})
+}
 
 

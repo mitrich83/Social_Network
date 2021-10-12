@@ -34,7 +34,6 @@ export const LoginForm = () => {
             return errors;
         },
         onSubmit: values => {
-            debugger
             dispatch(login(values.email, values.password, values.rememberMe))
             formik.resetForm();
         },
