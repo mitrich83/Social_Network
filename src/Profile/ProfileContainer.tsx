@@ -6,7 +6,6 @@ import {Redirect, RouteComponentProps, withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../hoc/withAuthRedirect';
-import {Preloader} from '../components/common/preloader/Preloader';
 
 type MapStatePropsType = {
     profile: ProfileType

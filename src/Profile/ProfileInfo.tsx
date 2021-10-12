@@ -8,25 +8,25 @@ import {ProfileStatusWithHooks} from './ProfileStatusWithHooks';
 type ProfileInfoPropsType = {
     profile: ProfileType
     status: string
-    updateUserStatus: (status:string)=> void
+    updateUserStatus: (status: string) => void
 }
-const ProfileInfo = (props: ProfileInfoPropsType) => {
-    if(!props.profile){
+const ProfileInfo = ({profile, status, updateUserStatus}: ProfileInfoPropsType) => {
+    if (!profile) {
         return <Preloader/>
     }
     return (
         <div>
 
             <div className={s.descriptionBlock}>
-                <img src={props.profile.photos.large}/>
-                <ProfileStatus status={props.status}
-                               updateUserStatus={props.updateUserStatus}
+                <img src={profile.photos.large}/>
+                <ProfileStatus status={status}
+                               updateUserStatus={updateUserStatus}
                 />
-                <ProfileStatusWithHooks status={props.status}
-                                        updateUserStatus={props.updateUserStatus}
+                <ProfileStatusWithHooks status={status}
+                                        updateUserStatus={updateUserStatus}
                 />
-                <div>{props.profile.fullName}</div>
-                <div>{props.profile.aboutMe}</div>
+                <div>{profile.fullName}</div>
+                <div>{profile.aboutMe}</div>
 
             </div>
         </div>
