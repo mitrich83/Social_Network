@@ -1,6 +1,7 @@
 import {UnfollowFollowResponseType, usersAPI} from '../api/api';
 import {Dispatch} from 'redux';
 
+
 const FOLLOW = 'USERS/FOLLOW'
 const UNFOLLOW = 'USERS/UNFOLLOW'
 const SET_USERS = 'USERS/SET_USERS'
