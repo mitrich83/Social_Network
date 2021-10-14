@@ -6,7 +6,8 @@ import {User} from './User';
 type UsersPropsType = {
     usersPage: UsersDataType,
     pageSize: number
-    totalUsersCount: number
+    portionSize: number
+    totalItemsCount: number
     currentPage: 1 | number
     follow: (userId: number) => void
     unfollow: (userId: number) => void
@@ -16,8 +17,9 @@ type UsersPropsType = {
 
 export const Users = (
     {
-        totalUsersCount,
+        totalItemsCount,
         pageSize,
+        portionSize,
         usersPage,
         currentPage,
         onPageChanged,
@@ -33,7 +35,8 @@ export const Users = (
                 currentPage={currentPage}
                 onPageChanged={onPageChanged}
                 pageSize={pageSize}
-                totalUsersCount={totalUsersCount}
+                totalItemsCount={totalItemsCount}
+                portionSize={portionSize}
             />
             <div>
                 {

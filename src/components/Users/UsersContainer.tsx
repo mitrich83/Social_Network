@@ -14,7 +14,7 @@ import {compose} from 'redux';
 import {
     getCurrentPage, getFollowingInProgress,
     getIsFetching,
-    getPageSize,
+    getPageSize, getPortionSize,
     getTotalUsersCount,
     getUsersSuperSelector
 } from '../../Redux/users-selectors';
@@ -24,7 +24,8 @@ type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType
 type mapStateToPropsType = {
     usersPage: UsersDataType,
     pageSize: number,
-    totalUsersCount: number,
+    portionSize: number
+    totalItemsCount: number,
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<number>,
@@ -52,8 +53,9 @@ class UsersContainer extends React.Component<UsersPropsType> {
         return <>
             {this.props.isFetching ? <Preloader/> : ''}
             <Users
-                totalUsersCount={this.props.totalUsersCount}
+                totalItemsCount={this.props.totalItemsCount}
                 pageSize={this.props.pageSize}
+                portionSize={this.props.portionSize}
                 usersPage={this.props.usersPage}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
@@ -69,7 +71,8 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     return {
         usersPage: getUsersSuperSelector(state),
         pageSize: getPageSize(state),
-        totalUsersCount: getTotalUsersCount(state),
+        portionSize: getPortionSize(state),
+        totalItemsCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),

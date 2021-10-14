@@ -13,7 +13,8 @@ const TOGGLE_IS_FOLLOWING_PROGRESS = 'USERS/TOGGLE-IS-FOLLOWING-PROGRESS'
 
 const initialState: UsersDataType = {
     users: [],
-    pageSize: 5,
+    pageSize: 20,
+    portionSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
@@ -121,6 +122,7 @@ export type UserType = {
 export type UsersDataType = {
     users: UserType[],
     pageSize: number,
+    portionSize: number
     totalUsersCount: number,
     currentPage: number
     isFetching: boolean
