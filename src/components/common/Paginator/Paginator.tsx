@@ -9,7 +9,6 @@ type PaginatorPropsType = {
     totalItemsCount: number
     currentPage: 1 | number
     onPageChanged: (pageNumber: number) => void
-
 }
 
 export const Paginator = React.memo(({
