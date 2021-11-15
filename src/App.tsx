@@ -15,9 +15,13 @@ import {initialiseAppTC} from './Redux/app-reducer';
 import {Preloader} from './components/common/preloader/Preloader';
 import {withSuspence} from './hoc/withSuspence';
 import {Login} from './components/login/Login';
+import {ChatPage} from './pages/chat/ChatPage';
+
+
 
 const DialogsContainer = React.lazy(() => import ('./Dialogs/DialogsContainer'))
 const ProfileContainer = React.lazy(() => import ('./Profile/ProfileContainer'))
+// const ChatPage = React.lazy(()=> import('./pages/chat/ChatPage'))
 
 
 type AppPropsType = MapDispatchToPropsType & MapStateToPropsType
@@ -49,6 +53,7 @@ class App extends React.Component<AppPropsType, AppStateType> {
                     <Route path={'/music'} render={() => <Music/>}/>
                     <Route path={'/settings'} render={() => <Settings/>}/>
                     <Route path={'/login'} render={withSuspence(Login)}/>
+                    <Route path={'/chat'} render={()=> <ChatPage/>}/>
                     {/*<Route path={'*'} render={() => <div>404</div>}/>*/}
                 </div>
             </div>
