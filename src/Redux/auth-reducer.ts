@@ -76,7 +76,6 @@ export const setMessagesLogin = (messageError: string) => (
 // thunks
 export type ThunkType = ThunkAction<void, AppStateType, unknown, AuthACTypes>
 
-
 export const getAuthUserData = () => async (dispatch: Dispatch<AuthACTypes>) => {
     let res = await authAPI.me()
     if (res.data.resultCode === 0) {
