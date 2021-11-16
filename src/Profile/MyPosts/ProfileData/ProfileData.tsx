@@ -12,7 +12,6 @@ export const ProfileData = ({profile}: ProfileDataType) => {
         <div>
             <b>Full name:</b> {profile.fullName}
         </div>
-
         <div>
             <b>About me:</b> {profile.aboutMe}
         </div>
@@ -26,11 +25,11 @@ export const ProfileData = ({profile}: ProfileDataType) => {
         }
         <div>
             <b>Contacts:</b>
-            {Object.keys(profile.contacts).map(key => {
+            {Object.entries(profile.contacts).map(([key, value], index) => {
                 return <ContactsInfo
-                    key={key}
+                    key={index}
                     contactTitle={key}
-                    contactValue={profile.contacts[key]}
+                    contactValue={value}
                 />
             })}
         </div>

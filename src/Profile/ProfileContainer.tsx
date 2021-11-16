@@ -55,7 +55,6 @@ class ProfileContainer extends React.Component<CommonPropsType> {
 
     render() {
         if (!this.props.authorizedUserId) return <Redirect to={'/login'}/>
-
         return (
             <Profile {...this.props}
                      isOwner={!this.props.match.params.userId}

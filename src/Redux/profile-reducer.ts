@@ -13,10 +13,10 @@ const SAVE_PHOTO = 'PROFILE/SAVE-PHOTO'
 
 //types
 export type PostType = {
-    message: string
-    image?: string
-    id: string
-    likesCount: number
+    message: string,
+    image?: string,
+    id: string,
+    likesCount: number,
 }
 export type ProfileDataType = {
     posts: Array<PostType>
@@ -26,23 +26,24 @@ export type ProfileDataType = {
 export type ProfileType = {
     userId: number
     aboutMe: string,
-    contacts: {
-        facebook: string,
-        website: null,
-        vk: string,
-        twitter: string,
-        instagram: string,
-        youtube: string,
-        github: string,
-        mainLink: null
-    },
+    contacts: ContactsType,
     lookingForAJob: boolean,
-    lookingForAJobDescription: string
-    fullName: string
+    lookingForAJobDescription: string,
+    fullName: string,
     photos: {
-        large: string
-        small: string
+        large: string,
+        small: string,
     }
+}
+
+export type ContactsType = {
+    facebook: null | string,
+    website: null | string,
+    vk: null | string,
+    twitter: null | string,
+    instagram: null | string,
+    github: null | string,
+    mainLink: null | string,
 }
 
 export type ActionProfileTypes =
@@ -62,6 +63,15 @@ const initialState: ProfileDataType = {
         photos: {
             large: '',
             small: ''
+        },
+        contacts: {
+            facebook: '',
+            website: '',
+            vk: '',
+            twitter: '',
+            instagram: '',
+            github: '',
+            mainLink: '',
         }
     } as ProfileType,
     status: '',
