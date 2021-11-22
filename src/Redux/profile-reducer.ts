@@ -125,6 +125,7 @@ export const deletePost = (message: string) => ({type: DELETE_POST, message} as 
 export const savePhotoSuccess = (photos: any) => ({type: SAVE_PHOTO, photos} as const)
 
 
+
 // thunks
 export const getUserProfile = (userId: string) =>
     async (dispatch: Dispatch<ActionProfileTypes>) => {
@@ -144,6 +145,7 @@ export const updateUserStatus = (status: string) =>
         const res = await profileAPI.updateStatus(status)
         if (res.data.resultCode === 0) {
             if (userId) {
+                debugger
                 dispatch(getUserStatus(userId))
             }
         }
@@ -156,6 +158,18 @@ export const savePhoto = (file: any) =>
         if (res.data.resultCode === 0) {
             if (userId) {
                 dispatch(savePhotoSuccess(res.data.data.photos))
+            }
+        }
+    }
+
+export const saveProfileData = (profile: ProfileType) =>
+    async (dispatch: ThunkDispatch<AppStateType, unknown, ActionProfileTypes>, getState: () => AppStateType) => {
+        debugger
+        const res = await profileAPI.saveProfileData(profile)
+        if (res.data.resultCode === 0) {
+            const userId = getState().auth.userId
+            if (userId) {
+                dispatch(getUserProfile(userId))
             }
         }
     }

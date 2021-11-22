@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './Profile.module.css'
 import ProfileInfo from './ProfileInfo';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
 import {ProfileType} from '../Redux/profile-reducer';
@@ -10,6 +9,7 @@ type ProfilePropsType = {
     status: string
     updateUserStatus: (status: string) => void
     savePhoto: (file: any)=> void
+    saveProfileData: (profile: ProfileType)=> void
 }
 
 const Profile = (props: ProfilePropsType) => {
@@ -21,6 +21,7 @@ const Profile = (props: ProfilePropsType) => {
                 status={props.status}
                 updateUserStatus={props.updateUserStatus}
                 savePhoto={props.savePhoto}
+                saveProfileData={props.saveProfileData}
             />
             <MyPostsContainer/>
         </div>
