@@ -43,9 +43,9 @@ const ProfileInfo = ({
     return (
         <div>
             <div className={s.descriptionBlock}>
-                <img className={s.mainPhoto}
-                     src={profile.photos.large || userPhoto}
-                />
+                {/*<img className={s.mainPhoto}*/}
+                {/*     src={profile.photos.large || userPhoto}*/}
+                {/*/>*/}
                 {isOwner &&
                 <input type={'file'} onChange={onMainPhotoSelected}/>}
                 {editMode
